@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "handle_LSR:instructions.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "opCode">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "mapper_mm1_calc_prg:mapper_mmc1.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "prgBanks[0][0x30C]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ppu_clock:ppu.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "ppuData.pictureBuffer[0][0]">
+            </PersistentString>
+            <PersistentString
+               value = "errno()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "cpu_clock:cpu.c">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

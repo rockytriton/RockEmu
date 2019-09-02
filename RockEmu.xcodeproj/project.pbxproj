@@ -1,0 +1,581 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F4849F9E231814EB00DEF4BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4849F9D231814EB00DEF4BE /* AppDelegate.swift */; };
+		F4849FA0231814EB00DEF4BE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4849F9F231814EB00DEF4BE /* ViewController.swift */; };
+		F4849FA2231814EB00DEF4BE /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4849FA1231814EB00DEF4BE /* Document.swift */; };
+		F4849FA4231814EC00DEF4BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4849FA3231814EC00DEF4BE /* Assets.xcassets */; };
+		F4849FA7231814EC00DEF4BE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4849FA5231814EC00DEF4BE /* Main.storyboard */; };
+		F4849FB3231814EC00DEF4BE /* RockEmuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4849FB2231814EC00DEF4BE /* RockEmuTests.swift */; };
+		F4849FBE231815B400DEF4BE /* EmuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4849FBD231815B400DEF4BE /* EmuView.swift */; };
+		F4849FDC2318162200DEF4BE /* bus.c in Sources */ = {isa = PBXBuildFile; fileRef = F4849FC42318162100DEF4BE /* bus.c */; };
+		F4849FDD2318162200DEF4BE /* mapper_mmc1.c in Sources */ = {isa = PBXBuildFile; fileRef = F4849FC52318162100DEF4BE /* mapper_mmc1.c */; };
+		F4849FDE2318162200DEF4BE /* op_codes.c in Sources */ = {isa = PBXBuildFile; fileRef = F4849FC62318162100DEF4BE /* op_codes.c */; };
+		F4849FDF2318162200DEF4BE /* mapper_nrom.c in Sources */ = {isa = PBXBuildFile; fileRef = F4849FC72318162100DEF4BE /* mapper_nrom.c */; };
+		F4849FE02318162200DEF4BE /* cpu.c in Sources */ = {isa = PBXBuildFile; fileRef = F4849FC82318162100DEF4BE /* cpu.c */; };
+		F4849FE12318162200DEF4BE /* ppu_bus.c in Sources */ = {isa = PBXBuildFile; fileRef = F4849FC92318162100DEF4BE /* ppu_bus.c */; };
+		F4849FE22318162200DEF4BE /* cartridge.c in Sources */ = {isa = PBXBuildFile; fileRef = F4849FCA2318162100DEF4BE /* cartridge.c */; };
+		F4849FE32318162200DEF4BE /* instructions.c in Sources */ = {isa = PBXBuildFile; fileRef = F4849FCB2318162100DEF4BE /* instructions.c */; };
+		F4849FE42318162200DEF4BE /* mapper.c in Sources */ = {isa = PBXBuildFile; fileRef = F4849FD02318162200DEF4BE /* mapper.c */; };
+		F4849FE52318162200DEF4BE /* pipeline.c in Sources */ = {isa = PBXBuildFile; fileRef = F4849FD12318162200DEF4BE /* pipeline.c */; };
+		F4849FE62318162200DEF4BE /* addr_modes.c in Sources */ = {isa = PBXBuildFile; fileRef = F4849FD22318162200DEF4BE /* addr_modes.c */; };
+		F4849FE72318162200DEF4BE /* controller.c in Sources */ = {isa = PBXBuildFile; fileRef = F4849FD62318162200DEF4BE /* controller.c */; };
+		F4849FE82318162200DEF4BE /* instructions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4849FD72318162200DEF4BE /* instructions.cpp */; };
+		F4849FE92318162200DEF4BE /* ppu.c in Sources */ = {isa = PBXBuildFile; fileRef = F4849FDB2318162200DEF4BE /* ppu.c */; };
+		F4849FEB2318191000DEF4BE /* EmuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4849FEA2318191000DEF4BE /* EmuVC.swift */; };
+		F4849FEE2318330100DEF4BE /* CodeViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4849FEC2318330100DEF4BE /* CodeViewVC.swift */; };
+		F4849FEF2318330100DEF4BE /* CodeViewVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4849FED2318330100DEF4BE /* CodeViewVC.xib */; };
+		F4849FF22318345500DEF4BE /* CodeViewWC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4849FF02318345500DEF4BE /* CodeViewWC.swift */; };
+		F4849FF32318345500DEF4BE /* CodeViewWC.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4849FF12318345500DEF4BE /* CodeViewWC.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F4849FAF231814EC00DEF4BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F4849F92231814EB00DEF4BE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F4849F99231814EB00DEF4BE;
+			remoteInfo = RockEmu;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		F4849F9A231814EB00DEF4BE /* RockEmu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RockEmu.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4849F9D231814EB00DEF4BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F4849F9F231814EB00DEF4BE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F4849FA1231814EB00DEF4BE /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
+		F4849FA3231814EC00DEF4BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F4849FA6231814EC00DEF4BE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F4849FA8231814EC00DEF4BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F4849FA9231814EC00DEF4BE /* RockEmu.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RockEmu.entitlements; sourceTree = "<group>"; };
+		F4849FAE231814EC00DEF4BE /* RockEmuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RockEmuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4849FB2231814EC00DEF4BE /* RockEmuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RockEmuTests.swift; sourceTree = "<group>"; };
+		F4849FB4231814EC00DEF4BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F4849FBD231815B400DEF4BE /* EmuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmuView.swift; sourceTree = "<group>"; };
+		F4849FC02318162100DEF4BE /* RockEmu-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RockEmu-Bridging-Header.h"; sourceTree = "<group>"; };
+		F4849FC12318162100DEF4BE /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		F4849FC22318162100DEF4BE /* mapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mapper.h; sourceTree = "<group>"; };
+		F4849FC32318162100DEF4BE /* bus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bus.h; sourceTree = "<group>"; };
+		F4849FC42318162100DEF4BE /* bus.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bus.c; sourceTree = "<group>"; };
+		F4849FC52318162100DEF4BE /* mapper_mmc1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mapper_mmc1.c; sourceTree = "<group>"; };
+		F4849FC62318162100DEF4BE /* op_codes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = op_codes.c; sourceTree = "<group>"; };
+		F4849FC72318162100DEF4BE /* mapper_nrom.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mapper_nrom.c; sourceTree = "<group>"; };
+		F4849FC82318162100DEF4BE /* cpu.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpu.c; sourceTree = "<group>"; };
+		F4849FC92318162100DEF4BE /* ppu_bus.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ppu_bus.c; sourceTree = "<group>"; };
+		F4849FCA2318162100DEF4BE /* cartridge.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cartridge.c; sourceTree = "<group>"; };
+		F4849FCB2318162100DEF4BE /* instructions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = instructions.c; sourceTree = "<group>"; };
+		F4849FCC2318162200DEF4BE /* pipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pipeline.h; sourceTree = "<group>"; };
+		F4849FCD2318162200DEF4BE /* instructions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = instructions.h; sourceTree = "<group>"; };
+		F4849FCE2318162200DEF4BE /* ppu_bus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ppu_bus.h; sourceTree = "<group>"; };
+		F4849FCF2318162200DEF4BE /* ppu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ppu.h; sourceTree = "<group>"; };
+		F4849FD02318162200DEF4BE /* mapper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mapper.c; sourceTree = "<group>"; };
+		F4849FD12318162200DEF4BE /* pipeline.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pipeline.c; sourceTree = "<group>"; };
+		F4849FD22318162200DEF4BE /* addr_modes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = addr_modes.c; sourceTree = "<group>"; };
+		F4849FD32318162200DEF4BE /* controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = controller.h; sourceTree = "<group>"; };
+		F4849FD42318162200DEF4BE /* cpu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpu.h; sourceTree = "<group>"; };
+		F4849FD52318162200DEF4BE /* cartridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cartridge.h; sourceTree = "<group>"; };
+		F4849FD62318162200DEF4BE /* controller.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = controller.c; sourceTree = "<group>"; };
+		F4849FD72318162200DEF4BE /* instructions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = instructions.cpp; sourceTree = "<group>"; };
+		F4849FD82318162200DEF4BE /* addr_modes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = addr_modes.h; sourceTree = "<group>"; };
+		F4849FD92318162200DEF4BE /* op_codes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = op_codes.h; sourceTree = "<group>"; };
+		F4849FDB2318162200DEF4BE /* ppu.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ppu.c; sourceTree = "<group>"; };
+		F4849FEA2318191000DEF4BE /* EmuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmuVC.swift; sourceTree = "<group>"; };
+		F4849FEC2318330100DEF4BE /* CodeViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeViewVC.swift; sourceTree = "<group>"; };
+		F4849FED2318330100DEF4BE /* CodeViewVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeViewVC.xib; sourceTree = "<group>"; };
+		F4849FF02318345500DEF4BE /* CodeViewWC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeViewWC.swift; sourceTree = "<group>"; };
+		F4849FF12318345500DEF4BE /* CodeViewWC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeViewWC.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F4849F97231814EB00DEF4BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F4849FAB231814EC00DEF4BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F4849F91231814EB00DEF4BE = {
+			isa = PBXGroup;
+			children = (
+				F4849F9C231814EB00DEF4BE /* RockEmu */,
+				F4849FB1231814EC00DEF4BE /* RockEmuTests */,
+				F4849F9B231814EB00DEF4BE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F4849F9B231814EB00DEF4BE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F4849F9A231814EB00DEF4BE /* RockEmu.app */,
+				F4849FAE231814EC00DEF4BE /* RockEmuTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F4849F9C231814EB00DEF4BE /* RockEmu */ = {
+			isa = PBXGroup;
+			children = (
+				F4849FBF231815BE00DEF4BE /* emu_engine */,
+				F4849F9D231814EB00DEF4BE /* AppDelegate.swift */,
+				F4849F9F231814EB00DEF4BE /* ViewController.swift */,
+				F4849FA1231814EB00DEF4BE /* Document.swift */,
+				F4849FA3231814EC00DEF4BE /* Assets.xcassets */,
+				F4849FA5231814EC00DEF4BE /* Main.storyboard */,
+				F4849FA8231814EC00DEF4BE /* Info.plist */,
+				F4849FA9231814EC00DEF4BE /* RockEmu.entitlements */,
+				F4849FBD231815B400DEF4BE /* EmuView.swift */,
+				F4849FEA2318191000DEF4BE /* EmuVC.swift */,
+				F4849FEC2318330100DEF4BE /* CodeViewVC.swift */,
+				F4849FED2318330100DEF4BE /* CodeViewVC.xib */,
+				F4849FF02318345500DEF4BE /* CodeViewWC.swift */,
+				F4849FF12318345500DEF4BE /* CodeViewWC.xib */,
+			);
+			path = RockEmu;
+			sourceTree = "<group>";
+		};
+		F4849FB1231814EC00DEF4BE /* RockEmuTests */ = {
+			isa = PBXGroup;
+			children = (
+				F4849FB2231814EC00DEF4BE /* RockEmuTests.swift */,
+				F4849FB4231814EC00DEF4BE /* Info.plist */,
+			);
+			path = RockEmuTests;
+			sourceTree = "<group>";
+		};
+		F4849FBF231815BE00DEF4BE /* emu_engine */ = {
+			isa = PBXGroup;
+			children = (
+				F4849FD22318162200DEF4BE /* addr_modes.c */,
+				F4849FD82318162200DEF4BE /* addr_modes.h */,
+				F4849FC42318162100DEF4BE /* bus.c */,
+				F4849FC32318162100DEF4BE /* bus.h */,
+				F4849FCA2318162100DEF4BE /* cartridge.c */,
+				F4849FD52318162200DEF4BE /* cartridge.h */,
+				F4849FC12318162100DEF4BE /* common.h */,
+				F4849FD62318162200DEF4BE /* controller.c */,
+				F4849FD32318162200DEF4BE /* controller.h */,
+				F4849FC82318162100DEF4BE /* cpu.c */,
+				F4849FD42318162200DEF4BE /* cpu.h */,
+				F4849FCB2318162100DEF4BE /* instructions.c */,
+				F4849FD72318162200DEF4BE /* instructions.cpp */,
+				F4849FCD2318162200DEF4BE /* instructions.h */,
+				F4849FC52318162100DEF4BE /* mapper_mmc1.c */,
+				F4849FC72318162100DEF4BE /* mapper_nrom.c */,
+				F4849FD02318162200DEF4BE /* mapper.c */,
+				F4849FC22318162100DEF4BE /* mapper.h */,
+				F4849FC62318162100DEF4BE /* op_codes.c */,
+				F4849FD92318162200DEF4BE /* op_codes.h */,
+				F4849FD12318162200DEF4BE /* pipeline.c */,
+				F4849FCC2318162200DEF4BE /* pipeline.h */,
+				F4849FC92318162100DEF4BE /* ppu_bus.c */,
+				F4849FCE2318162200DEF4BE /* ppu_bus.h */,
+				F4849FDB2318162200DEF4BE /* ppu.c */,
+				F4849FCF2318162200DEF4BE /* ppu.h */,
+				F4849FC02318162100DEF4BE /* RockEmu-Bridging-Header.h */,
+			);
+			path = emu_engine;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F4849F99231814EB00DEF4BE /* RockEmu */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4849FB7231814EC00DEF4BE /* Build configuration list for PBXNativeTarget "RockEmu" */;
+			buildPhases = (
+				F4849F96231814EB00DEF4BE /* Sources */,
+				F4849F97231814EB00DEF4BE /* Frameworks */,
+				F4849F98231814EB00DEF4BE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RockEmu;
+			productName = RockEmu;
+			productReference = F4849F9A231814EB00DEF4BE /* RockEmu.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F4849FAD231814EC00DEF4BE /* RockEmuTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4849FBA231814EC00DEF4BE /* Build configuration list for PBXNativeTarget "RockEmuTests" */;
+			buildPhases = (
+				F4849FAA231814EC00DEF4BE /* Sources */,
+				F4849FAB231814EC00DEF4BE /* Frameworks */,
+				F4849FAC231814EC00DEF4BE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F4849FB0231814EC00DEF4BE /* PBXTargetDependency */,
+			);
+			name = RockEmuTests;
+			productName = RockEmuTests;
+			productReference = F4849FAE231814EC00DEF4BE /* RockEmuTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F4849F92231814EB00DEF4BE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1030;
+				LastUpgradeCheck = 1030;
+				ORGANIZATIONNAME = "Rocky Pulley";
+				TargetAttributes = {
+					F4849F99231814EB00DEF4BE = {
+						CreatedOnToolsVersion = 10.3;
+						LastSwiftMigration = 1030;
+					};
+					F4849FAD231814EC00DEF4BE = {
+						CreatedOnToolsVersion = 10.3;
+						TestTargetID = F4849F99231814EB00DEF4BE;
+					};
+				};
+			};
+			buildConfigurationList = F4849F95231814EB00DEF4BE /* Build configuration list for PBXProject "RockEmu" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F4849F91231814EB00DEF4BE;
+			productRefGroup = F4849F9B231814EB00DEF4BE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F4849F99231814EB00DEF4BE /* RockEmu */,
+				F4849FAD231814EC00DEF4BE /* RockEmuTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F4849F98231814EB00DEF4BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4849FEF2318330100DEF4BE /* CodeViewVC.xib in Resources */,
+				F4849FA4231814EC00DEF4BE /* Assets.xcassets in Resources */,
+				F4849FA7231814EC00DEF4BE /* Main.storyboard in Resources */,
+				F4849FF32318345500DEF4BE /* CodeViewWC.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F4849FAC231814EC00DEF4BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F4849F96231814EB00DEF4BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4849FDC2318162200DEF4BE /* bus.c in Sources */,
+				F4849FE72318162200DEF4BE /* controller.c in Sources */,
+				F4849FA0231814EB00DEF4BE /* ViewController.swift in Sources */,
+				F4849FE92318162200DEF4BE /* ppu.c in Sources */,
+				F4849FE12318162200DEF4BE /* ppu_bus.c in Sources */,
+				F4849FE52318162200DEF4BE /* pipeline.c in Sources */,
+				F4849FEE2318330100DEF4BE /* CodeViewVC.swift in Sources */,
+				F4849F9E231814EB00DEF4BE /* AppDelegate.swift in Sources */,
+				F4849FE42318162200DEF4BE /* mapper.c in Sources */,
+				F4849FBE231815B400DEF4BE /* EmuView.swift in Sources */,
+				F4849FDD2318162200DEF4BE /* mapper_mmc1.c in Sources */,
+				F4849FE22318162200DEF4BE /* cartridge.c in Sources */,
+				F4849FA2231814EB00DEF4BE /* Document.swift in Sources */,
+				F4849FE32318162200DEF4BE /* instructions.c in Sources */,
+				F4849FE62318162200DEF4BE /* addr_modes.c in Sources */,
+				F4849FF22318345500DEF4BE /* CodeViewWC.swift in Sources */,
+				F4849FE02318162200DEF4BE /* cpu.c in Sources */,
+				F4849FDF2318162200DEF4BE /* mapper_nrom.c in Sources */,
+				F4849FDE2318162200DEF4BE /* op_codes.c in Sources */,
+				F4849FE82318162200DEF4BE /* instructions.cpp in Sources */,
+				F4849FEB2318191000DEF4BE /* EmuVC.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F4849FAA231814EC00DEF4BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4849FB3231814EC00DEF4BE /* RockEmuTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F4849FB0231814EC00DEF4BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F4849F99231814EB00DEF4BE /* RockEmu */;
+			targetProxy = F4849FAF231814EC00DEF4BE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		F4849FA5231814EC00DEF4BE /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F4849FA6231814EC00DEF4BE /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F4849FB5231814EC00DEF4BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F4849FB6231814EC00DEF4BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		F4849FB8231814EC00DEF4BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = RockEmu/RockEmu.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = RockEmu/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dreamsyssoft.RockEmu;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "RockEmu/emu_engine/RockEmu-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F4849FB9231814EC00DEF4BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = RockEmu/RockEmu.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = RockEmu/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dreamsyssoft.RockEmu;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "RockEmu/emu_engine/RockEmu-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		F4849FBB231814EC00DEF4BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = RockEmuTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dreamsyssoft.RockEmuTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RockEmu.app/Contents/MacOS/RockEmu";
+			};
+			name = Debug;
+		};
+		F4849FBC231814EC00DEF4BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = RockEmuTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dreamsyssoft.RockEmuTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RockEmu.app/Contents/MacOS/RockEmu";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F4849F95231814EB00DEF4BE /* Build configuration list for PBXProject "RockEmu" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4849FB5231814EC00DEF4BE /* Debug */,
+				F4849FB6231814EC00DEF4BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F4849FB7231814EC00DEF4BE /* Build configuration list for PBXNativeTarget "RockEmu" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4849FB8231814EC00DEF4BE /* Debug */,
+				F4849FB9231814EC00DEF4BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F4849FBA231814EC00DEF4BE /* Build configuration list for PBXNativeTarget "RockEmuTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4849FBB231814EC00DEF4BE /* Debug */,
+				F4849FBC231814EC00DEF4BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F4849F92231814EB00DEF4BE /* Project object */;
+}
