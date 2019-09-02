@@ -21,6 +21,17 @@ void ignoreLog(const char *fmt, ...) {
     
 }
 
+bool keyPressed[] = {
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+};
+
 uint8_t controller_data[] = {0, 0};
 bool controller_strobe = false;
 
@@ -37,6 +48,19 @@ uint8_t controller_read(uint8_t n) {
 
 void controller_write(uint8_t b) {
     controller_strobe = b & 1;
+    
+    if (!controller_strobe) {
+        uint8_t keyStates = 0;
+        int shift = 0;
+        
+        for (int i=0; i<8; i++) {
+            keyStates |= (keyPressed[i] << shift);
+            shift++;
+        }
+        
+        printf("CHANGING STATE: %0.2X, %0.2X\r\n", controller_data[0], keyStates);
+        controller_data[0] = keyStates;
+    }
 }
 
 void controller_set(uint8_t n, uint8_t b, uint8_t val) {
@@ -46,6 +70,16 @@ void controller_set(uint8_t n, uint8_t b, uint8_t val) {
     } else {
         controller_data[n] &= ~b;
     }
+    
+    if (b == BUTTON_A) keyPressed[0] = val;
+    if (b == BUTTON_B) keyPressed[1] = val;
+    if (b == BUTTON_SE) keyPressed[2] = val;
+    if (b == BUTTON_ST) keyPressed[3] = val;
+    if (b == BUTTON_U) keyPressed[4] = val;
+    if (b == BUTTON_D) keyPressed[5] = val;
+    if (b == BUTTON_L) keyPressed[6] = val;
+    if (b == BUTTON_R) keyPressed[7] = val;
+    
 }
 
 void controller_button_down(uint8_t n, uint8_t b) {

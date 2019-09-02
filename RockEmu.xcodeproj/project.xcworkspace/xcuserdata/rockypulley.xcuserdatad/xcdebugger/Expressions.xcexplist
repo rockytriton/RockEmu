@@ -3,6 +3,14 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "mapper_nrom_create:mapper_nrom.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "data-&gt;header.mainFlags.flags6">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "handle_LSR:instructions.c">
          <PersistentStrings>
             <PersistentString
@@ -11,10 +19,24 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "cartridge_load:cartridge.c">
+      </ContextState>
+      <ContextState
+         contextName = "cpu_clock:cpu.c">
+      </ContextState>
+      <ContextState
          contextName = "mapper_mm1_calc_prg:mapper_mmc1.c">
          <PersistentStrings>
             <PersistentString
                value = "prgBanks[0][0x30C]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ppu_bus_update_mirroring:ppu_bus.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "mapper_get_current()-&gt;mirroringType">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -28,9 +50,6 @@
                value = "errno()">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "cpu_clock:cpu.c">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

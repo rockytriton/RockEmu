@@ -187,8 +187,8 @@ uint8_t ppu_read_data(void) {
         printf("Swapped: %0.2X\r\n", data);
     }
     
-    if (bound) {
-        ppuData.dataAddress = 0;
+    if (ppuData.dataAddress > 0x3FFF) {
+        
     }
     
     return data;
@@ -282,8 +282,15 @@ void ppu_do_dma(uint8_t *page) {
     memcpy(ppuData.spriteMemory + ppuData.spriteDataAddress, page, 256 - ppuData.spriteDataAddress);
     
     if (ppuData.spriteDataAddress) {
-        memcpy(ppuData.spriteMemory, page, 256 - ppuData.spriteDataAddress);
+        memcpy(ppuData.spriteMemory, page + (256 - ppuData.spriteDataAddress), ppuData.spriteDataAddress);
     }
+    
+    /*
+     
+     std::memcpy(m_spriteMemory.data() + m_spriteDataAddress, page_ptr, 256 - m_spriteDataAddress);
+     if (m_spriteDataAddress)
+     std::memcpy(m_spriteMemory.data(), page_ptr + (256 - m_spriteDataAddress), m_spriteDataAddress);
+     */
 }
 
 void ppu_set_scroll(uint8_t scroll) {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F47EE558231CDE570082396F /* pipeline_new.c in Sources */ = {isa = PBXBuildFile; fileRef = F47EE557231CDE570082396F /* pipeline_new.c */; };
 		F4849F9E231814EB00DEF4BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4849F9D231814EB00DEF4BE /* AppDelegate.swift */; };
 		F4849FA0231814EB00DEF4BE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4849F9F231814EB00DEF4BE /* ViewController.swift */; };
 		F4849FA2231814EB00DEF4BE /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4849FA1231814EB00DEF4BE /* Document.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F47EE557231CDE570082396F /* pipeline_new.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pipeline_new.c; sourceTree = "<group>"; };
 		F4849F9A231814EB00DEF4BE /* RockEmu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RockEmu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4849F9D231814EB00DEF4BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4849F9F231814EB00DEF4BE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 				F4849FDB2318162200DEF4BE /* ppu.c */,
 				F4849FCF2318162200DEF4BE /* ppu.h */,
 				F4849FC02318162100DEF4BE /* RockEmu-Bridging-Header.h */,
+				F47EE557231CDE570082396F /* pipeline_new.c */,
 			);
 			path = emu_engine;
 			sourceTree = "<group>";
@@ -295,6 +298,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F47EE558231CDE570082396F /* pipeline_new.c in Sources */,
 				F4849FDC2318162200DEF4BE /* bus.c in Sources */,
 				F4849FE72318162200DEF4BE /* controller.c in Sources */,
 				F4849FA0231814EB00DEF4BE /* ViewController.swift in Sources */,

@@ -57,7 +57,7 @@ struct Mapper *mapper_nrom_create(struct NesData *data) {
     m->writeCHR = mapper_nrom_write_chr;
     m->getPagePointer = mapper_nrom_get_page;
     
-    m->mirroringType = data->header.mainFlags.Bit.mt;
+    m->mirroringType = data->header.mainFlags.flags6 & 1;
     
     return m;
 }

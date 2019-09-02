@@ -94,6 +94,9 @@ void bus_write(uint16_t address, uint8_t value) {
     } else if (address < 0x4000 && (address & 0x2007) == PPUSCROL) {
         ppu_set_scroll(value);
         return;
+    } else if (address < 0x4000 && (address & 0x2007) == JOY1) {
+        controller_write(value);
+        return;
     } else {
         prg_ram[address] = value;
         return;
@@ -130,6 +133,8 @@ uint8_t bus_read(uint16_t address) {
         return s;
     } else if (address < 0x4000 && address < 0x4000 && (address & 0x2007) == PPUDATA) {
         return ppu_read_data();
+    } else if (address < 0x4000 && address < 0x4000 && (address & 0x2007) == OAMDATA) {
+        return ppu_oam_read();
     } else if (address < 0x4000 && address < 0x4000 && (address & 0x2007) == PPUCTRL) {
         return ppu_read_control();
     } else if (address < 0x4000 && address < 0x4000 && (address & 0x2007) == PPUMASK) {

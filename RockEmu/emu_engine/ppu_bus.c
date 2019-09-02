@@ -121,7 +121,7 @@ void ppu_bus_write(uint16_t addr, uint8_t value) {
 }
 
 void ppu_bus_update_mirroring() {
-    memset(nameTables, 0, 8);
+    //memset(nameTables, 0, 8);
     
     switch(mapper_get_current()->mirroringType){
         case Horizontal:
