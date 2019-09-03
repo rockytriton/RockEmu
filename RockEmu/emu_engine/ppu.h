@@ -61,11 +61,13 @@ struct PpuData {
     uint8_t *spriteMemory;
     
     uint32_t **pictureBuffer;
+    uint32_t curFrame;
 };
 
 void ppu_init(void);
 void ppu_clock(void);
 
+struct PpuData *ppu_data_pointer();
 struct PpuData ppu_data(void);
 
 uint8_t ppu_read_status(void);

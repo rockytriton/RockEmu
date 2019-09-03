@@ -61,7 +61,6 @@ uint8_t mapper_mm1_read_prg(uint16_t addr) {
             }
         }
         
-        DOLOG("PRGBANKS: %0.16X, %0.16X - %0.4X - %0.4X\r\n", prgBanks[0], prgBanks[1], addr, addr & 0x3FFF);
         
         uint8_t *p = prgBanks[0];
         uint8_t bt = p[addr & 0x3FFF];

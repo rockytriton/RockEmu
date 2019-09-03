@@ -58,13 +58,13 @@ void controller_write(uint8_t b) {
             shift++;
         }
         
-        printf("CHANGING STATE: %0.2X, %0.2X\r\n", controller_data[0], keyStates);
+        //printf("CHANGING STATE: %0.2X, %0.2X\r\n", controller_data[0], keyStates);
         controller_data[0] = keyStates;
     }
 }
 
 void controller_set(uint8_t n, uint8_t b, uint8_t val) {
-    printf("controller_set called: %0.2X, %0.2X, %0.2X\r\n", n, b, val);
+    //printf("controller_set called: %0.2X, %0.2X, %0.2X\r\n", n, b, val);
     if (val) {
         controller_data[n] |= b;
     } else {

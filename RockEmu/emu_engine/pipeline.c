@@ -82,7 +82,6 @@ void ppu_prerender(struct PpuData *ppuData) {
         ppuData->cycle = 0; //veryfirst ? -1 : 0;
         ppuData->scanLine = 0;
         veryfirst = false;
-        DOLOG("---- SCANLINE %d\r\n", ppuData->scanLine);
     }
 }
 
@@ -102,7 +101,6 @@ void render_visible_dots(struct PpuData *ppuData) {
     }
     
     if (ppuData->scanLine == 0x42 && x == 0x33 && y == 0x42 && ppuData->scanLineSpritesSize == 6) {
-        DOLOG("HIT NEXT IF %d, %d\r\n", x, ppuData->scanLineSpritesSize);
         //logging = true;
     }
     
@@ -235,7 +233,6 @@ void render_visible_dots(struct PpuData *ppuData) {
             //DOLOG("CHECKHIT: %d, %d %d, %d - %d\r\n", GET_FLAG(ppuData->regStatus, PPUSTAT_S), GET_FLAG(ppuData->regMask, PPUMASK_BE), i, sprOpaque, bgOpaque);
             
             if (!(GET_FLAG(ppuData->regStatus, PPUSTAT_S)) && GET_FLAG(ppuData->regMask, PPUMASK_BE) && i == 0 && sprOpaque && bgOpaque) {
-                DOLOG("SET SP ZERO HIT\r\n");
                 SET_FLAG(ppuData->regStatus, PPUSTAT_S, 1);
             }
             
@@ -357,7 +354,6 @@ void ppu_render(struct PpuData *ppuData) {
         
         ppuData->scanLine++;
         ppuData->cycle = 0;
-        DOLOG("---- SCANLINE %d\r\n", ppuData->scanLine);
     }
     
     if (ppuData->scanLine >= VisibleScanlines) {
@@ -370,7 +366,6 @@ void ppu_postrender(struct PpuData *ppuData) {
     
     if (ppuData->cycle >= ScanlineEndCycle) {
         ppuData->scanLine++;
-        DOLOG("---- SCANLINE %d\r\n", ppuData->scanLine);
         ppuData->cycle = 0;
         ppuData->pipelineState = PPU_STATE_VBLANK;
         
@@ -422,13 +417,12 @@ void ppu_vblank(struct PpuData *ppuData) {
     if (ppuData->cycle >= ScanlineEndCycle) {
         ppuData->scanLine++;
         ppuData->cycle = 0;
-        DOLOG("---- SCANLINE %d\r\n", ppuData->scanLine);
     }
     
     if (ppuData->scanLine >= FrameEndScanline) {
         ppuData->pipelineState = PPU_STATE_PRE;
         ppuData->scanLine = 0;
-        DOLOG("---- SCANLINE %d\r\n", ppuData->scanLine);
         ppuData->evenFrame = !ppuData->evenFrame;
+        ppuData->curFrame++;
     }
 }

@@ -78,7 +78,7 @@ void bus_write(uint16_t address, uint8_t value) {
     } else if (address < 0x4000 && (address & 0x2007) == OAMDATA) {
         return ppu_oam_data_write(value);
     } else if (address < 0x4000 && (address & 0x2007)  == PPUADDR) {
-        printf("CALLING PPUADDRSET: %0.4X, %0.4X, %0.2X\r\n", address, address & 0x2007, value);
+        //printf("CALLING PPUADDRSET: %0.4X, %0.4X, %0.2X\r\n", address, address & 0x2007, value);
         return ppu_set_data_addr(value);
     } else if (address < 0x4000 && (address & 0x2007)  == PPUDATA) {
         return ppu_set_data(value);

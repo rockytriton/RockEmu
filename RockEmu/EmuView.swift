@@ -7,14 +7,29 @@
 //
 
 import Cocoa
+import IOKit
+import IOKit.usb
+import IOKit.hid
 
 class EmuView: NSView {
     @IBOutlet weak var imgView: NSImageView!
     
+    public struct PixelData {
+        var a:UInt8 = 255
+        var r:UInt8
+        var g:UInt8
+        var b:UInt8
+    }
+    
+    private let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
+    private let bitmapInfo:CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue)
     
     public static var drawing = false
     
     var times = 0;
+    var ppuData : UnsafeMutablePointer<PpuData>
+    
+    var pixelData = [PixelData](repeating: PixelData(a:0,r:0,g:0,b:0), count: 240 * 256);
     
     var imageData = [[Int?]](
         repeating: [Int?](repeating: nil, count: 256),
@@ -22,6 +37,8 @@ class EmuView: NSView {
     )
     
     required init?(coder decoder: NSCoder) {
+        
+        ppuData = ppu_data_pointer();
         super.init(coder: decoder)
         
         for y in 0..<240 {
@@ -71,6 +88,36 @@ class EmuView: NSView {
         }
     }
     
+    public func imageFromARGB32Bitmap(pixels:[PixelData], width:Int, height:Int)->NSImage {
+        let bitsPerComponent:Int = 8
+        let bitsPerPixel:Int = 32
+        
+        assert(pixels.count == Int(width * height))
+        
+        var data = pixels // Copy to mutable []
+        let providerRef = CGDataProvider(
+            data: NSData(bytes: &data, length: data.count * MemoryLayout.size(ofValue: pixels[0]))
+        )
+        
+        let cgim = CGImage(
+            width: width,
+            height: height,
+            bitsPerComponent: bitsPerComponent,
+            bitsPerPixel: bitsPerPixel,
+            bytesPerRow: width * Int(MemoryLayout.size(ofValue: pixels[0])),
+            space: rgbColorSpace,
+            bitmapInfo: bitmapInfo,
+            provider: providerRef!,
+            decode: nil,
+            shouldInterpolate: true,
+            intent: .defaultIntent
+        )
+        
+        return NSImage(cgImage: cgim!, size: NSZeroSize)
+    }
+    
+    var lastFrame : UInt32 = 0;
+    
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
 
@@ -80,6 +127,14 @@ class EmuView: NSView {
             return;
         }
         
+        if (ppuData.pointee.curFrame == lastFrame) {
+            return;
+        }
+        
+        lastFrame = ppuData.pointee.curFrame
+        
+        print("Drawing Frame: ", lastFrame)
+        
         var pb = ppu_data().pictureBuffer;
         var i = 0;
         
@@ -87,17 +142,19 @@ class EmuView: NSView {
             for xxx in 0..<256 {
                 //print("y,x = ", yyy, ",", xxx)
                 var bt = pb![xxx]
-                imageData[yyy][xxx] = Int(bt![yyy]);
+                var n = Int(bt![yyy]);
+                //imageData[yyy][xxx] = n
+                
+                var p = PixelData(a:255, r: UInt8((n & 0xFF000000) >> 24), g: UInt8((n & 0x00FF0000) >> 16), b: UInt8((n & 0x0000FF00) >> 8))
+                pixelData[(yyy * 256) + xxx] = p;
             }
         }
         
         
+        /*
         let image = NSImage(size: NSSize(width: 240, height: 256))
         
         image.lockFocus()
-        
-        //imageData[self.y][self.x] = 0x00000000
-        //print("X,Y", x, y)
         
         for y in 0..<240 {
             for x in 0..<256 {
@@ -108,11 +165,11 @@ class EmuView: NSView {
             }
         }
         
-        
         image.unlockFocus()
+        */
         
+        let image = imageFromARGB32Bitmap(pixels: pixelData, width: 256, height: 240)
         imgView.image = image
-        
     }
     
     /*

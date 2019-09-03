@@ -7,6 +7,9 @@
 //
 
 import Cocoa
+import IOKit
+import IOKit.usb
+import IOKit.hid
 
 class EmuVC: NSViewController {
     @IBOutlet weak var emuImage: NSImageView!
@@ -38,7 +41,8 @@ class EmuVC: NSViewController {
         
         emuImage.imageScaling = NSImageScaling.scaleProportionallyUpOrDown
         
-        var timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(0.25), repeats: true, block: {_ in self.onDraw()})
+        var timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(0.005), repeats: true, block: {_ in self.onDraw()})
+        
     }
     
     override func keyDown(with event: NSEvent) {
@@ -51,7 +55,6 @@ class EmuVC: NSViewController {
     }
     
     func onDraw() {
-        //print("OK DRAW")
         /*
         emuImage.image?.lockFocus()
         
@@ -68,7 +71,9 @@ class EmuVC: NSViewController {
         */
         //emuImage.image?.draw(in: NSRect(x: 0, y: 0, width: 240, height: 256))
         emuView.setNeedsDisplay(NSRect(x: 0, y: 0, width: 240, height: 256))
+        //
         
+        //CFRunLoopRun()
         //emuView.draw()
     }
     

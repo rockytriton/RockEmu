@@ -16,4 +16,6 @@ void ppu_render(struct PpuData *ppuData);
 void ppu_postrender(struct PpuData *ppuData);
 void ppu_vblank(struct PpuData *ppuData);
 
+void ppu_render_new(struct PpuData *p) ;
+
 #endif /* pipeline_h */

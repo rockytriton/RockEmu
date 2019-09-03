@@ -50,6 +50,10 @@ struct PpuData ppu_data(void) {
     return ppuData;
 }
 
+struct PpuData *ppu_data_pointer() {
+    return &ppuData;
+}
+
 /*
  PPUCTRL    $2000    VPHB SINN    NMI enable (V), PPU master/slave (P), sprite height (H), background tile select (B), sprite tile select (S), increment mode (I), nametable select (NN)
  PPUMASK    $2001    BGRs bMmG    color emphasis (BGR), sprite enable (s), background enable (b), sprite left column enable (M), background left column enable (m), greyscale (G)
@@ -73,6 +77,7 @@ void ppu_init() {
     ppuData.scanLineSpritesSize = 0;
     ppuData.spriteMemory = (uint8_t *)malloc(64 * 4);
     memset(ppuData.spriteMemory, 0, 64 * 4);
+    ppuData.curFrame = 0;
     
     ppuData.pictureBuffer = (uint32_t **)malloc(sizeof(uint32_t *) * ScanlineVisibleDots);
     
@@ -127,30 +132,30 @@ void ppu_clock() {
         dumped = 1;
     }
     
+    //ppu_render_new(&ppuData);
+    
+    
     switch(ppuData.pipelineState) {
         case PPU_STATE_PRE:
-            if (onBcc) DOLOG("%0.8X PPU PRE: %4d - %0.2X\r\n", ppuCount++, ppuData.cycle, ppuData.regStatus);
             ppu_prerender(&ppuData);
             break;
         case PPU_STATE_RENDER:
-            if (onBcc) DOLOG("%0.8X PPU REN: %4d - %0.2X\r\n", ppuCount++, ppuData.cycle, ppuData.regStatus);
             ppu_render(&ppuData);
             break;
         case PPU_STATE_POST:
-            if (onBcc) DOLOG("%0.8X PPU POS: %4d - %0.2X\r\n", ppuCount++, ppuData.cycle, ppuData.regStatus);
             ppu_postrender(&ppuData);
             break;
         case PPU_STATE_VBLANK:
-            if (onBcc) DOLOG("%0.8X PPU VBL: %4d - %0.2X\r\n", ppuCount++, ppuData.cycle, ppuData.regStatus);
             ppu_vblank(&ppuData);
             break;
     }
+    
     
     ppuData.cycle++;
 }
 
 void ppu_oam_data_write(uint8_t data) {
-    printf("OAM DATA WRITE %0.4X, %0.2X\r\n", ppuData.spriteDataAddress, data);
+    //printf("OAM DATA WRITE %0.4X, %0.2X\r\n", ppuData.spriteDataAddress, data);
     //ppu_set_data(ppuData.dataAddress);
     //ppuData.dataAddress += ppuData.addIncrement;
     ppuData.spriteMemory[ppuData.spriteDataAddress++] = data;
@@ -160,7 +165,6 @@ uint8_t ppu_read_status(void) {
     uint8_t temp = ppuData.regStatus;
     ppuData.firstWrite = true;
     SET_FLAG(ppuData.regStatus, PPUSTAT_V, 0);
-    DOLOG("READ STATUS RESET VB\r\n");
     
     return temp;
 }
@@ -178,13 +182,13 @@ uint8_t ppu_read_data(void) {
     bool bound = ppuData.dataAddress == 0x3FFF;
     
     ppuData.dataAddress += ppuData.addIncrement;
-    printf("PPUREADINC: %0.4X = %0.2X, %0.2X\r\n", ppuData.dataAddress, data, ppuData.dataBuffer);
+    //printf("PPUREADINC: %0.4X = %0.2X, %0.2X\r\n", ppuData.dataAddress, data, ppuData.dataBuffer);
     
     if (ppuData.dataAddress < 0x3F00) {
         uint8_t tmp = ppuData.dataBuffer;
         ppuData.dataBuffer = data;
         data = tmp;
-        printf("Swapped: %0.2X\r\n", data);
+        //printf("Swapped: %0.2X\r\n", data);
     }
     
     if (ppuData.dataAddress > 0x3FFF) {
@@ -195,18 +199,18 @@ uint8_t ppu_read_data(void) {
 }
 
 void ppu_set_data_addr(uint16_t addr) {
-    printf("PPUDATAADDR SET: %0.4X\r\n", addr);
+    //printf("PPUDATAADDR SET: %0.4X\r\n", addr);
     
     if (ppuData.firstWrite) {
         ppuData.tempAddress &= ~0xff00;
         ppuData.tempAddress |= (addr & 0x3F) << 8;
         ppuData.firstWrite = false;
-        printf("FIRST WRITE: %0.4X\r\n", ppuData.tempAddress);
+        //printf("FIRST WRITE: %0.4X\r\n", ppuData.tempAddress);
     } else {
         ppuData.tempAddress &= ~0xff;
         ppuData.tempAddress |= addr;
         ppuData.dataAddress = ppuData.tempAddress;
-        printf("PPUDATA TEMP: %0.4X\r\n", ppuData.dataAddress);
+        //printf("PPUDATA TEMP: %0.4X\r\n", ppuData.dataAddress);
         ppuData.firstWrite = true;
     }
 }
@@ -216,17 +220,16 @@ uint8_t ppu_oam_read_addr(uint16_t addr) {
 }
 
 uint8_t ppu_oam_read() {
-    printf("OAMDATA READ: %0.4X - %0.2X\r\n", ppuData.spriteDataAddress, ppu_oam_read_addr(ppuData.spriteDataAddress));
+    //printf("OAMDATA READ: %0.4X - %0.2X\r\n", ppuData.spriteDataAddress, ppu_oam_read_addr(ppuData.spriteDataAddress));
     return ppu_oam_read_addr(ppuData.spriteDataAddress);
 }
 
 void ppu_set_status(uint8_t data) {
-    DOLOG("SETPPUSTATUS: %0.2X\r\n", data);
     ppuData.regStatus = data;
 }
 
 void ppu_set_data(uint8_t data) {
-    printf("WRITEPPUDATA: %0.4X = %0.2X\r\n", ppuData.dataAddress, data);
+    //printf("WRITEPPUDATA: %0.4X = %0.2X\r\n", ppuData.dataAddress, data);
     ppu_bus_write(ppuData.dataAddress, data);
     ppuData.dataAddress += ppuData.addIncrement;
 }
@@ -237,7 +240,7 @@ void ppu_set_oam_addr(uint8_t addr) {
 }
 
 void ppu_oam_write_addr(uint16_t addr, uint8_t value) {
-    printf("WRITE OAM: %0.4X, %0.2X\r\n", addr, value);
+    //printf("WRITE OAM: %0.4X, %0.2X\r\n", addr, value);
     ppuData.spriteMemory[addr] = value;
 }
 
@@ -261,7 +264,6 @@ void ppu_set_control(uint8_t value) {
 
 void ppu_set_mask(uint8_t value) {
     ppuData.regMask = value;
-    DOLOG("SETMASK: %0.2X\r\n", value);
 }
 
 void ppu_do_dma(uint8_t *page) {

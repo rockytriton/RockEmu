@@ -16,9 +16,9 @@ extern int counter;
 
 #define DEF_F(x) uint8_t x(struct CpuData *data, struct OpCode *opCode)
 
-#define STACK_PUSH(x) bus_write(data->sp + 0x0100, x); data->sp--; DOLOG("%0.8X STACK WRITE %0.2X = %0.2X\r\n", counter - 1, data->sp + 1, x);
+#define STACK_PUSH(x) bus_write(data->sp + 0x0100, x); data->sp--;// DOLOG("%0.8X STACK WRITE %0.2X = %0.2X\r\n", counter - 1, data->sp + 1, x);
 
-#define STACK_POP(x) data->sp++; x = bus_read(data->sp + 0x0100); DOLOG("%0.8X STACK READ %0.2X = %0.2X\r\n", counter - 1, data->sp - 1, x);
+#define STACK_POP(x) data->sp++; x = bus_read(data->sp + 0x0100);//DOLOG("%0.8X STACK READ %0.2X = %0.2X\r\n", counter - 1, data->sp - 1, x);
 
 extern struct CpuData cpuData;
 
@@ -140,7 +140,6 @@ DEF_F(handle_AND) {
 }
 
 DEF_F(handle_BEQ) {
-    DOLOG("BEQ BEFORE: %d\r\n", data->cycles);
     if (cpu_get_flag(STATREG_Z)) {
         data->cycles++;
         data->addr_abs = data->pc + data->addr_rel;
@@ -153,7 +152,6 @@ DEF_F(handle_BEQ) {
         data->pc = data->addr_abs;
         //DOLOG("SET PC 03: %0.4X - %0.4X\r\n", data->pc, data->addr_abs);
     }
-    DOLOG("BEQ AFTER: %d\r\n", data->cycles);
     
     return 0;
 }
@@ -263,7 +261,6 @@ DEF_F(handle_JSR) {
     STACK_PUSH(data->pc & 0x00FF);
     
     data->pc = data->addr_abs;
-    DOLOG("SET PC 07: %0.4X - %0.4X - %s\r\n", data->pc, data->addr_abs, opCode->name);
     
     return 0;
 }
@@ -446,9 +443,7 @@ DEF_F(handle_RTI) {
     STACK_POP(lo);
     
     data->pc = lo << 8;
-    DOLOG("PC: %0.4X\r\n", data->pc);
     data->pc |= hi;
-    DOLOG("PC: %0.4X\r\n", data->pc);
     
     //data->sp--;
     //data->pc = (uint16_t)bus_read(0x0100 + data->sp);
@@ -552,11 +547,9 @@ DEF_F(handle_LSR) {
     uint16_t temp = data->fetched >> 1;
     setNZFlags16(temp);
     
-    DOLOG("LSR 01: %0.4X, %0.4X\r\n", temp, data->fetched);
     
     if (opCode->address_mode == ACC) {
         data->regA = temp & 0x00FF;
-        DOLOG("LSR 02: %0.2X, %0.4X\r\n", data->regA, temp & 0x00FF);
     } else {
         bus_write(data->addr_abs, temp & 0x00FF);
     }
@@ -579,7 +572,6 @@ DEF_F(handle_ASL) {
 int onBcc = 0;
 DEF_F(handle_BCC) {
     onBcc = 1;
-    DOLOG("BCC CYCLES BEFORE: %d\r\n", data->cycles);
     if (!cpu_get_flag(STATREG_C)) {
         data->cycles++;
         data->addr_abs = data->pc + data->addr_rel;
@@ -590,7 +582,6 @@ DEF_F(handle_BCC) {
         
         data->pc = data->addr_abs;
     }
-    DOLOG("BCC CYCLES AFTER: %d\r\n", data->cycles);
     return 0;
 }
 
@@ -716,9 +707,8 @@ void cpu_interrupt(uint8_t type) {
     
     if (type == 0) {
         data->addr_abs = 0xFFFE;
-        DOLOG("BRK!\r\n");
     } else if (type == 0xff) {
-        DOLOG("NMI!\r\n");
+        
     }
     
     uint16_t lo = bus_read(data->addr_abs + 0);

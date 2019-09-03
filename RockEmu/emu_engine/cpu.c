@@ -12,9 +12,14 @@
 #include "addr_modes.h"
 #include "instructions.h"
 #include "ppu.h"
+#include "timing.h"
 
 #include <unistd.h>
 #include <string.h>
+#include <time.h>
+#include <inttypes.h>
+#include <sys/timeb.h>
+
 
 const int STATREG_C = 1 << 0;
 const int STATREG_Z = 1 << 1;
@@ -66,7 +71,7 @@ void cpu_init() {
     cpuData.regStatus = 0;
     cpuData.paused = 0;
     cpuData.stepping = 0;
-    cpuData.clock_delta = 1;
+    cpuData.clock_delta = 5000;
     counter = 0;
     
     for (int i=0; i<HISTORY_SIZE; i++) {
@@ -83,10 +88,12 @@ void cpu_init() {
 
 struct NesData * cpu_open_file(const char *filename) {
     
-    
+    printf("Opening file %s\r\n", filename);
     ppu_init();
     cpu_init();
+    printf("Init\r\n");
     data = cartridge_load(filename);
+    printf("Loaded\r\n");
     ppu_bus_update_mirroring();
     bus_load(data->prgData, 0x8000, MIN(data->header.prgSize, 2) * 0x4000);
     
@@ -99,6 +106,7 @@ struct NesData * cpu_open_file(const char *filename) {
     
     DOLOG("RESET AT: %0.4X\r\n", cpuData.pc);
     
+    printf("Starting\r\n");
     started = 1;
     return data;
 }
@@ -114,23 +122,15 @@ static void fetch_abs_addr(struct OpCode opCode) {
     
     if (opCode.address_mode != IMP && opCode.address_mode != ACC) {
         cpuData.fetched = bus_read(cpuData.addr_abs);
-        
-        if (opCode.code == 0xF9) {
-            DOLOG("SBC FETCHED VALUE: %0.2X from %0.4X\r\n", cpuData.fetched, cpuData.addr_abs);
-        }
+
     }
 }
 extern int onBcc;
 
+int lastOpCode = 0;
+
 void cpu_clock() {
-    //char path[1024];
-    //getcwd(path, sizeof(path));
-    //puts(path);
-    
-    //DOLOG("PC: %0.4X\r\n", cpuData.pc);
-    if (onBcc) {
-        DOLOG("ON BCC CLOCK: %d\r\n", cpuData.cycles);
-    }
+
     if (cpuData.cycles != 0) {
         cpuData.cycles--;
         return;
@@ -143,6 +143,7 @@ void cpu_clock() {
     struct OpCode opCode = cpu_current_opcode();
     cpuData.pc++;
     
+    lastOpCode = opCode.code;
     cpuData.cycles = opCode.cycles;
     
     uint8_t amc = addr_mode_fetch(&cpuData, &opCode);
@@ -151,6 +152,7 @@ void cpu_clock() {
     
     fetch_abs_addr(opCode);
     
+    /*
     for (int i=0; i<HISTORY_SIZE; i++) {
         history[i] = history[i + 1];
     }
@@ -160,10 +162,11 @@ void cpu_clock() {
     history[HISTORY_SIZE - 1].addr_rel = cpuData.addr_rel;
     history[HISTORY_SIZE - 1].fetched = cpuData.fetched;
     history[HISTORY_SIZE - 1].pc = oldPc;
+    */
     
     //DOLOG("ADDED HISTORY ITEM: %0.16X\r\n", history[HISTORY_SIZE - 1].opCode.name);
     
-#if 0 //ISLOGGING
+#if ISLOGGING
     printf("%0.8X %0.4X %s (%0.2X) $%0.4X, %0.4X = %0.2X - A: %0.2X X: %0.2X Y: %0.2X SP: %0.2X CYC: %4d  - P: %0.2X ADDRINFO\r\n", counter++,
            oldPc, opCode.name, opCode.code, cpuData.addr_abs, cpuData.addr_rel, cpuData.fetched,
            cpuData.regA, cpuData.regX, cpuData.regY, cpuData.sp, ppuData.cycle, cpuData.regStatus);
@@ -189,12 +192,32 @@ uint8_t cpu_started() {
     return started;
 }
 
+#define NES_CLOCK_HZ (21477272ll / 4)
+#define NES_CLOCK_MS (21477272ll / 4) / 1000 / 1000
+
+
+unsigned long prevMs = 0;
+
+#define BILLION  1000000000.0;
+//#define BILLION  1000000000L
+
 void cpu_run() {
+    timer_init();
+    
+    printf("RUNNING CPU\r\n");
+    
+    //usleep(1);
+    
+    int cycleCount = 0;
+    
     while(true) {
+        
         //useconds_t t = 1 * cpuData.clock_delta;
         //usleep(t);
         
         if (!started) {
+            //printf("not start\r\n");
+            usleep(1500);
             continue;
         }
         
@@ -202,14 +225,47 @@ void cpu_run() {
             if (cpuData.stepping) {
                 cpuData.stepping = 0;
             } else {
+                //printf("paused\r\n");
+                usleep(1500);
                 continue;
             }
         }
         
-        ppu_clock();
-        ppu_clock();
-        ppu_clock();
-        cpu_clock();
+        timer_update();
+        
+        //printf("Cycle Count: %d - (%0.2X)\r\n", cycleCount, lastOpCode);
+        cycleCount = 0;
+        
+        struct PpuData *p = ppu_data_pointer();
+        
+        struct timeb start, end;
+        int curFrame = 0;
+        ftime(&start);
+        
+        
+        while(true) { //timer_loop()) {
+            
+            ppu_clock();
+            ppu_clock();
+            ppu_clock();
+            
+            startProfile();
+            cpu_clock();
+            endProfile();
+            
+            //timer_cycle();
+            
+            if (curFrame < p->curFrame) {
+                ftime(&end);
+                int diff = (int) (1000.0 * (end.time - start.time) + (end.millitm - start.millitm));
+                
+                usleep(3000 - diff);
+                curFrame = p->curFrame;
+                ftime(&start);
+            }
+            
+            cycleCount++;
+        }
     }
 }
 
@@ -256,11 +312,7 @@ void cpu_clock_delta(int32_t n) {
 }
 
 void cpu_skip_dma_cycles() {
-    DOLOG("SKIPCYCLES: 01: %4d\r\n", cpuData.cycles);
     uint16_t ss = 513; // + cpuData.cycles;
-    DOLOG("SKIPCYCLES: 02: %4d\r\n", ss);
     ss += ((cpuData.cycles - 1) & 1);
-    DOLOG("SKIPCYCLES: 03: %4d\r\n", ss);
     cpuData.cycles += ss;
-    DOLOG("SKIPCYCLES: 04: %4d\r\n", cpuData.cycles);
 }

@@ -34,9 +34,9 @@ struct NesData *cartridge_load(const char *filename) {
     data->header = gameHeader;
     
     int trainer = gameHeader.mainFlags.flags6 & 0x04;
-    
+#ifdef ISLOGGING
     DOLOG("HEADER: %d, %d\r\n", gameHeader.mainFlags.Bit.tr, gameHeader.mainFlags.Bit.mn);
-    
+#endif
     if (trainer) {
         data->trainerData = (uint8_t *)malloc(0x200);
         
