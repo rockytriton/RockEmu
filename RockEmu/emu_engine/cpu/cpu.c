@@ -243,7 +243,7 @@ void cpu_run() {
         ftime(&start);
         
         
-        while(true) { //timer_loop()) {
+        while(timer_loop()) {
             
             ppu_clock();
             ppu_clock();
@@ -253,19 +253,22 @@ void cpu_run() {
             cpu_clock();
             endProfile();
             
-            //timer_cycle();
+            timer_cycle();
+            
             
             if (curFrame < p->curFrame) {
                 ftime(&end);
                 int diff = (int) (1000.0 * (end.time - start.time) + (end.millitm - start.millitm));
                 
-                usleep(3000 - diff);
+                usleep(5000 - diff);
                 curFrame = p->curFrame;
                 ftime(&start);
             }
             
             cycleCount++;
         }
+        
+        usleep(1000);
     }
 }
 

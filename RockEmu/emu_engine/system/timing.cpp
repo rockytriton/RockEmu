@@ -13,8 +13,8 @@
 using TimePoint = std::chrono::high_resolution_clock::time_point;
 
 std::chrono::high_resolution_clock::duration m_elapsedTime;
-//std::chrono::nanoseconds m_cpuCycleDuration = std::chrono::nanoseconds(559);
-std::chrono::nanoseconds m_cpuCycleDuration = std::chrono::microseconds(500);
+std::chrono::nanoseconds m_cpuCycleDuration = std::chrono::nanoseconds(59);
+//std::chrono::nanoseconds m_cpuCycleDuration = std::chrono::microseconds(500);
 std::chrono::nanoseconds longTime = std::chrono::nanoseconds(2059);
 
 TimePoint m_cycleTimer;

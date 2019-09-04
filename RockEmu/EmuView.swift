@@ -121,7 +121,6 @@ class EmuView: NSView {
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
 
-        //ppu_get_pattern(<#T##n: UInt16##UInt16#>, <#T##x: UInt8##UInt8#>, <#T##y: UInt8##UInt8#>)
         
         if (!EmuView.drawing) {
             return;
@@ -131,14 +130,16 @@ class EmuView: NSView {
             return;
         }
         
+        var pb = ppu_data().pictureBuffer;
+        
         lastFrame = ppuData.pointee.curFrame
         
         //print("Drawing Frame: ", lastFrame)
-        
-        var pb = ppu_data().pictureBuffer;
         var i = 0;
         
         for yyy in 0..<240 {
+            var ypos = (yyy * 256);
+            
             for xxx in 0..<256 {
                 //print("y,x = ", yyy, ",", xxx)
                 var bt = pb![xxx]
@@ -146,7 +147,7 @@ class EmuView: NSView {
                 //imageData[yyy][xxx] = n
                 
                 var p = PixelData(a:255, r: UInt8((n & 0xFF000000) >> 24), g: UInt8((n & 0x00FF0000) >> 16), b: UInt8((n & 0x0000FF00) >> 8))
-                pixelData[(yyy * 256) + xxx] = p;
+                pixelData[ypos + xxx] = p;
             }
         }
         

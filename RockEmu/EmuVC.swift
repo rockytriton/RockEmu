@@ -41,7 +41,7 @@ class EmuVC: NSViewController {
         
         emuImage.imageScaling = NSImageScaling.scaleProportionallyUpOrDown
         
-        var timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(0.005), repeats: true, block: {_ in self.onDraw()})
+        var timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(0.03), repeats: true, block: {_ in self.onDraw()})
         
     }
     
