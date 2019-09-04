@@ -13,6 +13,8 @@
 
 #define GET_FLAG(reg, n) ((reg & n) ? 1 : 0)
 
+typedef uint8_t byte;
+
 void ignoreLog(const char *fmt, ...);
 
 #if 0

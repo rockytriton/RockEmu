@@ -58,7 +58,7 @@ struct NesData *cartridge_load(const char *filename) {
             return 0;
         }
         
-        DOLOG("READ CHAR DATA: %0.4X\r\n", 0x2000 * gameHeader.chrSize);
+        printf("READ CHAR DATA: %0.4X - %d\r\n", 0x2000 * gameHeader.chrSize, gameHeader.chrSize);
     }
     
     nesData = data;

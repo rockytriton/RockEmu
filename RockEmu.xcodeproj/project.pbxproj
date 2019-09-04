@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F414776D231F655E000F52FD /* AudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F414776C231F655E000F52FD /* AudioKit.framework */; };
+		F414776F231FE005000F52FD /* mapper_sxrom.c in Sources */ = {isa = PBXBuildFile; fileRef = F414776E231FE005000F52FD /* mapper_sxrom.c */; };
 		F41FD07E231DFD36009BFC2D /* timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F41FD07D231DFD36009BFC2D /* timing.cpp */; };
 		F41FD085231EA3E4009BFC2D /* mapper_cnrom.c in Sources */ = {isa = PBXBuildFile; fileRef = F41FD084231EA3E4009BFC2D /* mapper_cnrom.c */; };
 		F41FD087231EA73F009BFC2D /* mapper_mmc3.c in Sources */ = {isa = PBXBuildFile; fileRef = F41FD086231EA73F009BFC2D /* mapper_mmc3.c */; };
@@ -50,6 +52,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F414776A231F6516000F52FD /* AudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioKit.framework; path = "../../../Users/rockypulley/Downloads/AudioKit-macOS/AudioKit.framework"; sourceTree = "<group>"; };
+		F414776C231F655E000F52FD /* AudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AudioKit.framework; sourceTree = "<group>"; };
+		F414776E231FE005000F52FD /* mapper_sxrom.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mapper_sxrom.c; sourceTree = "<group>"; };
 		F41FD07C231DFD36009BFC2D /* timing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = timing.h; sourceTree = "<group>"; };
 		F41FD07D231DFD36009BFC2D /* timing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = timing.cpp; sourceTree = "<group>"; };
 		F41FD084231EA3E4009BFC2D /* mapper_cnrom.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mapper_cnrom.c; sourceTree = "<group>"; };
@@ -106,6 +111,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F414776D231F655E000F52FD /* AudioKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +125,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F4147769231F6515000F52FD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F414776A231F6516000F52FD /* AudioKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F41FD07F231EA287009BFC2D /* includes */ = {
 			isa = PBXGroup;
 			children = (
@@ -182,6 +196,7 @@
 				F4849FC72318162100DEF4BE /* mapper_nrom.c */,
 				F4849FC52318162100DEF4BE /* mapper_mmc1.c */,
 				F41FD086231EA73F009BFC2D /* mapper_mmc3.c */,
+				F414776E231FE005000F52FD /* mapper_sxrom.c */,
 			);
 			path = mappers;
 			sourceTree = "<group>";
@@ -192,6 +207,7 @@
 				F4849F9C231814EB00DEF4BE /* RockEmu */,
 				F4849FB1231814EC00DEF4BE /* RockEmuTests */,
 				F4849F9B231814EB00DEF4BE /* Products */,
+				F4147769231F6515000F52FD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -207,6 +223,7 @@
 		F4849F9C231814EB00DEF4BE /* RockEmu */ = {
 			isa = PBXGroup;
 			children = (
+				F414776C231F655E000F52FD /* AudioKit.framework */,
 				F4849FBF231815BE00DEF4BE /* emu_engine */,
 				F4849F9D231814EB00DEF4BE /* AppDelegate.swift */,
 				F4849F9F231814EB00DEF4BE /* ViewController.swift */,
@@ -353,6 +370,7 @@
 				F4849FDC2318162200DEF4BE /* bus.c in Sources */,
 				F4849FE72318162200DEF4BE /* controller.c in Sources */,
 				F4849FA0231814EB00DEF4BE /* ViewController.swift in Sources */,
+				F414776F231FE005000F52FD /* mapper_sxrom.c in Sources */,
 				F4849FE92318162200DEF4BE /* ppu.c in Sources */,
 				F4849FE12318162200DEF4BE /* ppu_bus.c in Sources */,
 				F4849FE52318162200DEF4BE /* pipeline.c in Sources */,
@@ -531,6 +549,10 @@
 				CODE_SIGN_ENTITLEMENTS = RockEmu/RockEmu.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/RockEmu",
+				);
 				INFOPLIST_FILE = RockEmu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -553,6 +575,10 @@
 				CODE_SIGN_ENTITLEMENTS = RockEmu/RockEmu.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/RockEmu",
+				);
 				INFOPLIST_FILE = RockEmu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

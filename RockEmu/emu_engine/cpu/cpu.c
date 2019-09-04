@@ -167,11 +167,11 @@ void cpu_clock() {
     //DOLOG("ADDED HISTORY ITEM: %0.16X\r\n", history[HISTORY_SIZE - 1].opCode.name);
     
 #if 0
-    printf("%0.8X %0.4X %s (%0.2X) $%0.4X, %0.4X = %0.2X - A: %0.2X X: %0.2X Y: %0.2X SP: %0.2X CYC: %4d  - P: %0.2X ADDRINFO\r\n", counter++,
+    printf("%0.8X %0.4X %s (%0.2X) $%0.4X, %0.4X = %0.2X - A: %0.2X X: %0.2X Y: %0.2X SP: %0.2X CYC: %4d  - P: %0.2X ADDRINFO\r\n", counter,
            oldPc, opCode.name, opCode.code, cpuData.addr_abs, cpuData.addr_rel, cpuData.fetched,
            cpuData.regA, cpuData.regX, cpuData.regY, cpuData.sp, ppuData.cycle, cpuData.regStatus);
 #endif
-    //counter++;
+    counter++;
     uint8_t imc = instruction_execute(&cpuData, &opCode);
     
     cpuData.cycles += (amc & imc);
@@ -243,24 +243,24 @@ void cpu_run() {
         ftime(&start);
         
         
-        while(timer_loop()) {
+        while(true) { //timer_loop()) {
             
             ppu_clock();
             ppu_clock();
             ppu_clock();
             
-            startProfile();
+            //startProfile();
             cpu_clock();
-            endProfile();
+            //endProfile();
             
-            timer_cycle();
+            //timer_cycle();
             
             
             if (curFrame < p->curFrame) {
                 ftime(&end);
                 int diff = (int) (1000.0 * (end.time - start.time) + (end.millitm - start.millitm));
                 
-                usleep(5000 - diff);
+                usleep(3000 - diff);
                 curFrame = p->curFrame;
                 ftime(&start);
             }

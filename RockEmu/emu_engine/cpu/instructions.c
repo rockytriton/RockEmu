@@ -819,6 +819,10 @@ uint8_t instruction_execute(struct CpuData *data, struct OpCode *opCode) {
             printf("%0.4X %0.2X\r\n", i, bus_read(i));
         }
         
+        printf("%0.8X %0.4X %s (%0.2X) $%0.4X, %0.4X = %0.2X - A: %0.2X X: %0.2X Y: %0.2X SP: %0.2X CYC: %4d  - P: %0.2X ADDRINFO\r\n", counter,
+               data->pc, opCode->name, opCode->code, data->addr_abs, data->addr_rel, data->fetched,
+               data->regA, data->regX, data->regY, data->sp, data->cycles, data->regStatus);
+        
         return 0;
     }
     

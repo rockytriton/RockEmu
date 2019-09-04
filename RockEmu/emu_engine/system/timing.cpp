@@ -32,8 +32,8 @@ void endProfile() {
     profileDuration = std::chrono::high_resolution_clock::now() - profileTimer;
     
     if (counter > 0 && profileDuration > m_cpuCycleDuration) {
-        printf("%0.8X: %0.2X\r\n", counter, lastOpCode);
-        printf("HIGH DURATION\r\n");
+        //printf("%0.8X: %0.2X\r\n", counter, lastOpCode);
+        //printf("HIGH DURATION\r\n");
     }
 }
 

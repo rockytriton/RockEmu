@@ -28,10 +28,18 @@ static uint8_t *chrRam;
 static uint32_t chrSize = 0;
 static uint32_t prgSize = 0;
 
+static uint8_t *prgRom[8];
+static uint8_t *chrRom[8];
+
 int dumpedBank = 0;
 extern int counter;
 
 uint8_t mapper_mm1_read_prg(uint16_t addr) {
+    
+    if (counter == 0x00006679) {
+        struct NesData *data = cartridge_get_data();
+        printf("STOP %0.8X, %0.8X, %0.8X\r\n", data->prgData, prgBanks[0], prgBanks[1]);
+    }
     
     if (addr < 0xC000) {
         return *(prgBanks[0] + (addr & 0x3FFF));
@@ -65,6 +73,8 @@ void mapper_mm1_calc_prg() {
     }
 }
 
+uint8_t control;
+
 void mapper_mm1_write_prg(uint16_t addr, uint8_t value) {
 
     uint8_t resetNotSet = (!(value & 0x80));
@@ -74,6 +84,7 @@ void mapper_mm1_write_prg(uint16_t addr, uint8_t value) {
         writeCounter = 0;
         modePRG = 3;
         mapper_mm1_calc_prg();
+        control = 0x10;
         return;
     }
     
@@ -87,6 +98,8 @@ void mapper_mm1_write_prg(uint16_t addr, uint8_t value) {
     struct NesData *data = cartridge_get_data();
     
     if (addr <= 0x9fff) {
+        
+        control = regTmp;
         
         switch(regTmp & 0x3) {
             case 0: mapper_get_current()->mirroringType = OneScreenLower; break;
@@ -104,23 +117,61 @@ void mapper_mm1_write_prg(uint16_t addr, uint8_t value) {
         if (modeCHR == 0) {
             chrBanks[0] = data->chrData + (0x1000 * (regChr0 | 1));
             chrBanks[1] = chrBanks[0] + 0x1000;
+            
+            printf("Switch mode 0 chr, %0.2X - %0.2X, %0.2X, %0.2X, %0.2X\r\n", regChr0, chrBanks[0][0] , chrBanks[0][1], chrBanks[1][0] , chrBanks[1][1] );
         } else {
+            printf("Switch mode 1 chr, %0.2X\r\n", regChr0);
             chrBanks[0] = data->chrData + (0x1000 * regChr0);
             chrBanks[1] = data->chrData + (0x1000 * regChr1);
         }
+        
+        printf("ASWITCHED CHR MODE: %d %0.8X - %0.8X, %0.8X\r\n", control & 0x10, data->chrData, chrBanks[0], chrBanks[1]);
+        printf("Switch mode 0 chr, %0.2X - %0.2X, %0.2X, %0.2X, %0.2X\r\n", regChr0, chrBanks[0][0] , chrBanks[0][1], chrBanks[1][0] , chrBanks[1][1] );
+        
     } else if (addr <= 0xbfff) {
+        if (control & 0x10) {
+            uint32_t addr = (regTmp  & 0x1f) << 12;
+            uint16_t size = 0x1000;
+            
+            chrBanks[0] = data->chrData + addr;
+        } else {
+            uint32_t addr = (regTmp  & 0x1e) << 12;
+            uint16_t size = 0x2000;
+            
+            chrBanks[0] = data->chrData + addr;
+        }
+        
+        printf("BSWITCHED CHR MODE: %d %0.8X - %0.8X, %0.8X\r\n", control & 0x10, data->chrData, chrBanks[0], chrBanks[1]);
+        printf("Switch mode 0 chr, %0.2X - %0.2X, %0.2X, %0.2X, %0.2X\r\n", regChr0, chrBanks[0][0] , chrBanks[0][1], chrBanks[1][0] , chrBanks[1][1] );
+        /*
         regChr0 = regTmp;
         chrBanks[0] = data->chrData + (0x1000 * (regTmp | (1 - modeCHR)));
         
         if (modeCHR == 0) {
             chrBanks[1] = chrBanks[0] + 0x1000;
-        }
+        }*/
     } else if (addr <= 0xdfff) {
-        regChr1 = regTmp;
-        
-        if (modeCHR == 1) {
-            chrBanks[1] = data->chrData + (0x1000 * regTmp);
+        if (control & 0x10) {
+            uint32_t addr = (regTmp  & 0x1f) << 12;
+            uint16_t size = 0x1000;
+            
+            chrBanks[1] = data->chrData + addr;
+        } else {
+            
         }
+        
+        printf("CSWITCHED CHR MODE: %d %0.8X - %0.8X, %0.8X\r\n", control & 0x10, data->chrData, chrBanks[0], chrBanks[1]);
+        printf("Switch mode 0 chr, %0.2X - %0.2X, %0.2X, %0.2X, %0.2X\r\n", regChr0, chrBanks[0][0] , chrBanks[0][1], chrBanks[1][0] , chrBanks[1][1] );
+        /*
+        
+          regChr1 = regTmp;
+          
+          if (modeCHR == 1) {
+          chrBanks[1] = data->chrData + (0x1000 * regTmp);
+          }
+          
+          */
+        
     } else {
         //TODO PRG-RAM...
         

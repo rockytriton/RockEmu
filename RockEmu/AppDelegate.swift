@@ -12,6 +12,8 @@ import IOKit
 import IOKit.usb
 import IOKit.hid
 
+import AudioKit
+
 var devices : CFSet? = nil
 
 var valueCallback : IOHIDValueCallback = {
@@ -400,9 +402,36 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         self.test()
+        /*
+        // 1. Create an oscillator
+        let oscillator = AKOscillator()
+        
+        // 2. Start the AudioKit 'engine'
+        AudioKit.output = oscillator
+        
+        try! AudioKit.start()
+        
+        // 3. Start the oscillator
+        oscillator.start()
+        
+        usleep(500000);
+        
+        oscillator.frequency *= 2;
+        
+        usleep(500000);
         
         
-         
+        
+        oscillator.frequency /= 8;
+        
+        usleep(500000);
+        oscillator.frequency *= 16;
+        
+        usleep(500000);
+        oscillator.frequency /= 12;
+        */
+        
+        
          /*
          
          let matchingDictionaries = [

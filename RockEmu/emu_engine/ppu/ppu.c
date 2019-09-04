@@ -117,24 +117,6 @@ void ppu_clock() {
         }
     }
     
-    if (!dumped && counter > 0x00202C63) {
-        FILE *fp = fopen("/Users/rockypulley/Documents/spram.rnes.txt", "w");
-        
-        int err = errno;
-        //printf("ERR: %d, %0.4X\r\n", errno, errno);
-        
-        for (int y=0; y<ScanlineVisibleDots; y++) {
-            for (int x=0; x<VisibleScanlines; x++) {
-                fprintf(fp, "%0.8X ", ppuData.pictureBuffer[y][x]);
-            }
-            fprintf(fp, "\r\n");
-        }
-        
-        fclose(fp);
-        
-        dumped = 1;
-    }
-    
     //ppu_render_new(&ppuData);
     
     
