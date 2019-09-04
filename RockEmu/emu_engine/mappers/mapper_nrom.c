@@ -36,6 +36,25 @@ void mapper_nrom_write_chr(uint16_t addr, uint8_t value) {
     }
 }
 
+static void mapper_save(FILE *fp) {
+    
+    fwrite(&prgSize, sizeof(uint16_t), 1, fp);
+    fwrite(&chrSize, sizeof(uint16_t), 1, fp);
+    fwrite(&oneBank, sizeof(bool), 1, fp);
+    fwrite(&usesCharRam, sizeof(bool), 1, fp);
+    //fwrite(&chrRam, sizeof(uint8_t *), 1, fp);
+}
+
+static void mapper_load(FILE *fp) {
+    
+    fread(&prgSize, sizeof(uint16_t), 1, fp);
+    fread(&chrSize, sizeof(uint16_t), 1, fp);
+    fread(&oneBank, sizeof(bool), 1, fp);
+    fread(&usesCharRam, sizeof(bool), 1, fp);
+    //fread(&chrRam, sizeof(uint8_t *), 1, fp);
+}
+
+
 struct Mapper *mapper_nrom_create(struct NesData *data) {
     struct Mapper *m = (struct Mapper *)malloc(sizeof(struct Mapper));
     
@@ -56,8 +75,11 @@ struct Mapper *mapper_nrom_create(struct NesData *data) {
     m->readCHR = mapper_nrom_read_chr;
     m->writeCHR = mapper_nrom_write_chr;
     m->getPagePointer = mapper_nrom_get_page;
+    m->load = mapper_load;
+    m->save = mapper_save;
     
     m->mirroringType = data->header.mainFlags.flags6 & 1;
     
     return m;
 }
+

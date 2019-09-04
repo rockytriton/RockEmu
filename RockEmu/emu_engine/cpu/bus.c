@@ -37,6 +37,19 @@ enum IORegisters
     JOY2 = 0x4017,
 };
 
+void bus_save_data(FILE *fp) {
+    fwrite(prg_ram, 64 * 1024, 1, fp);
+    fwrite(ram, 0x800, 1, fp);
+    fwrite(extRam, 0x2000, 1, fp);
+    
+}
+
+void bus_load_data(FILE *fp) {
+    fread(prg_ram, 64 * 1024, 1, fp);
+    fread(ram, 0x800, 1, fp);
+    fread(extRam, 0x2000, 1, fp);
+}
+
 void bus_init() {
     for (int i=0; i<64*1024; i++) {
         prg_ram[i] = 0;

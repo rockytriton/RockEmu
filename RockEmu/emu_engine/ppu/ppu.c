@@ -75,7 +75,6 @@ void ppu_init() {
     ppuData.dataBuffer = 0;
     ppuData.fineXScroll = 0;
     ppuData.scanLineSpritesSize = 0;
-    ppuData.spriteMemory = (uint8_t *)malloc(64 * 4);
     memset(ppuData.spriteMemory, 0, 64 * 4);
     ppuData.curFrame = 261;
     

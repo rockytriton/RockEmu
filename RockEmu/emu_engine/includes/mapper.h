@@ -24,6 +24,7 @@ enum MirroringType
 typedef void (*MapperWrite)(uint16_t addr, uint8_t value);
 typedef uint8_t (*MapperRead)(uint16_t addr);
 typedef uint8_t *(*MapperReadPtr)(uint16_t addr);
+typedef void *(*MapperFileIO)(FILE *fp);
 
 struct Mapper {
     MapperRead readPRG;
@@ -33,6 +34,9 @@ struct Mapper {
     MapperWrite writeCHR;
     
     MapperReadPtr getPagePointer;
+    
+    MapperFileIO load;
+    MapperFileIO save;
     
     enum MirroringType mirroringType;
 };

@@ -30,7 +30,7 @@ struct Mapper *mapper_create(struct NesData *data) {
             current_mapper = mapper_nrom_create(data);
         } break;
         case 1: {
-            current_mapper = mapper_sxrom_create(data);
+            current_mapper = mapper_mm1_create(data);
             fullRam = true;
         } break;
         case 3: {
@@ -58,3 +58,4 @@ struct Mapper *mapper_get_current(void) {
 bool mapper_full_ram(void) {
     return fullRam;
 }
+

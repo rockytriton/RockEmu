@@ -38,9 +38,9 @@ struct NesData *cartridge_load(const char *filename) {
     DOLOG("HEADER: %d, %d\r\n", gameHeader.mainFlags.Bit.tr, gameHeader.mainFlags.Bit.mn);
 #endif
     if (trainer) {
-        data->trainerData = (uint8_t *)malloc(0x200);
+        char trainerData[0x200];
         
-        if (!fread(data->trainerData, 0x200, 1, fp)) {
+        if (!fread(trainerData, 0x200, 1, fp)) {
             return 0;
         }
     }

@@ -118,18 +118,18 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Edit" id="5QF-Oa-p0T">
+                            <menuItem title="Emulator" id="5QF-Oa-p0T">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Edit" id="W48-6f-4Dl">
+                                <menu key="submenu" title="Emulator" id="W48-6f-4Dl">
                                     <items>
-                                        <menuItem title="Undo" keyEquivalent="z" id="dRJ-4n-Yzg">
+                                        <menuItem title="Save State" keyEquivalent="z" id="dRJ-4n-Yzg">
                                             <connections>
-                                                <action selector="undo:" target="Ady-hI-5gd" id="M6e-cu-g7V"/>
+                                                <action selector="onSaveState:" target="Voe-Tx-rLC" id="wuM-ZL-z5w"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Redo" keyEquivalent="Z" id="6dh-zS-Vam">
+                                        <menuItem title="Load State" keyEquivalent="Z" id="6dh-zS-Vam">
                                             <connections>
-                                                <action selector="redo:" target="Ady-hI-5gd" id="oIA-Rs-6OD"/>
+                                                <action selector="onLoadState:" target="Voe-Tx-rLC" id="Cib-wG-ucF"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="WRV-NI-Exz"/>

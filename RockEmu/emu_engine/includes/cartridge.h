@@ -37,7 +37,6 @@ struct NesData {
     struct NesHeader header;
     uint8_t *prgData;
     uint8_t *chrData;
-    uint8_t *trainerData;
     uint8_t valid;
 };
 

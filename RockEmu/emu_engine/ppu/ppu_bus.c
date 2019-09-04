@@ -13,6 +13,20 @@ uint8_t *ppu_bus_ram = 0;
 uint8_t *ppu_bus_palette = 0;
 uint16_t nameTables[] = {0, 0, 0, 0};
 
+void ppu_bus_save_data(FILE *fp) {
+    fwrite(ppu_bus_ram, 0x800, 1, fp);
+    fwrite(ppu_bus_palette, 0x20, 1, fp);
+    fwrite(nameTables, 8, 1, fp);
+    
+}
+
+void ppu_bus_load_data(FILE *fp) {
+    ppu_bus_init();
+    fread(ppu_bus_ram, 0x800, 1, fp);
+    fread(ppu_bus_palette, 0x20, 1, fp);
+    fread(nameTables, 8, 1, fp);
+}
+
 void ppu_bus_init() {
     memset(nameTables, 0, 4);
     ppu_bus_ram = (uint8_t *)malloc(0x800);

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		F414776D231F655E000F52FD /* AudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F414776C231F655E000F52FD /* AudioKit.framework */; };
 		F414776F231FE005000F52FD /* mapper_sxrom.c in Sources */ = {isa = PBXBuildFile; fileRef = F414776E231FE005000F52FD /* mapper_sxrom.c */; };
+		F414777123203455000F52FD /* mapper_mmc3_2.c in Sources */ = {isa = PBXBuildFile; fileRef = F414777023203455000F52FD /* mapper_mmc3_2.c */; };
+		F414777423205A80000F52FD /* system.c in Sources */ = {isa = PBXBuildFile; fileRef = F414777323205A80000F52FD /* system.c */; };
 		F41FD07E231DFD36009BFC2D /* timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F41FD07D231DFD36009BFC2D /* timing.cpp */; };
 		F41FD085231EA3E4009BFC2D /* mapper_cnrom.c in Sources */ = {isa = PBXBuildFile; fileRef = F41FD084231EA3E4009BFC2D /* mapper_cnrom.c */; };
 		F41FD087231EA73F009BFC2D /* mapper_mmc3.c in Sources */ = {isa = PBXBuildFile; fileRef = F41FD086231EA73F009BFC2D /* mapper_mmc3.c */; };
@@ -55,6 +57,9 @@
 		F414776A231F6516000F52FD /* AudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioKit.framework; path = "../../../Users/rockypulley/Downloads/AudioKit-macOS/AudioKit.framework"; sourceTree = "<group>"; };
 		F414776C231F655E000F52FD /* AudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AudioKit.framework; sourceTree = "<group>"; };
 		F414776E231FE005000F52FD /* mapper_sxrom.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mapper_sxrom.c; sourceTree = "<group>"; };
+		F414777023203455000F52FD /* mapper_mmc3_2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mapper_mmc3_2.c; sourceTree = "<group>"; };
+		F414777223205A80000F52FD /* system.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = system.h; sourceTree = "<group>"; };
+		F414777323205A80000F52FD /* system.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = system.c; sourceTree = "<group>"; };
 		F41FD07C231DFD36009BFC2D /* timing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = timing.h; sourceTree = "<group>"; };
 		F41FD07D231DFD36009BFC2D /* timing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = timing.cpp; sourceTree = "<group>"; };
 		F41FD084231EA3E4009BFC2D /* mapper_cnrom.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mapper_cnrom.c; sourceTree = "<group>"; };
@@ -184,6 +189,8 @@
 				F41FD07D231DFD36009BFC2D /* timing.cpp */,
 				F4849FD62318162200DEF4BE /* controller.c */,
 				F4849FCA2318162100DEF4BE /* cartridge.c */,
+				F414777223205A80000F52FD /* system.h */,
+				F414777323205A80000F52FD /* system.c */,
 			);
 			path = system;
 			sourceTree = "<group>";
@@ -197,6 +204,7 @@
 				F4849FC52318162100DEF4BE /* mapper_mmc1.c */,
 				F41FD086231EA73F009BFC2D /* mapper_mmc3.c */,
 				F414776E231FE005000F52FD /* mapper_sxrom.c */,
+				F414777023203455000F52FD /* mapper_mmc3_2.c */,
 			);
 			path = mappers;
 			sourceTree = "<group>";
@@ -368,6 +376,7 @@
 			files = (
 				F47EE558231CDE570082396F /* pipeline_new.c in Sources */,
 				F4849FDC2318162200DEF4BE /* bus.c in Sources */,
+				F414777423205A80000F52FD /* system.c in Sources */,
 				F4849FE72318162200DEF4BE /* controller.c in Sources */,
 				F4849FA0231814EB00DEF4BE /* ViewController.swift in Sources */,
 				F414776F231FE005000F52FD /* mapper_sxrom.c in Sources */,
@@ -381,6 +390,7 @@
 				F41FD085231EA3E4009BFC2D /* mapper_cnrom.c in Sources */,
 				F4849FBE231815B400DEF4BE /* EmuView.swift in Sources */,
 				F4849FDD2318162200DEF4BE /* mapper_mmc1.c in Sources */,
+				F414777123203455000F52FD /* mapper_mmc3_2.c in Sources */,
 				F4849FE22318162200DEF4BE /* cartridge.c in Sources */,
 				F4849FA2231814EB00DEF4BE /* Document.swift in Sources */,
 				F4849FE32318162200DEF4BE /* instructions.c in Sources */,
@@ -546,7 +556,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = RockEmu/RockEmu.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -572,7 +581,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = RockEmu/RockEmu.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (

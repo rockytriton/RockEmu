@@ -58,7 +58,7 @@ struct PpuData {
     
     uint8_t scanLineSprites[64];
     uint8_t scanLineSpritesSize;
-    uint8_t *spriteMemory;
+    uint8_t spriteMemory[64 * 4];
     
     uint32_t **pictureBuffer;
     uint32_t curFrame;

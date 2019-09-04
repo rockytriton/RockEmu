@@ -16,8 +16,6 @@ static byte regChrBank1 = 0;
 static byte regPrgBank = 0;
 static uint32_t prgSize = 0;
 
-static byte writeCount = 0;
-
 static byte *prgBanks[2];
 
 static byte *chrBanks[2];
@@ -49,8 +47,8 @@ void switch_chr_banks() {
         chrBanks[0] = &data->chrData[0x1000 * (regChrBank0 & 0x1E)];
         chrBanks[1] = chrBanks[0] + 0x1000;
         
-        //chrBanks[0] = data->chrData + (0x1000 * (regChrBank0 | 1));
-        //chrBanks[1] = chrBanks[0] + 0x1000;
+        chrBanks[0] = data->chrData + (0x1000 * (regChrBank0 | 1));
+        chrBanks[1] = chrBanks[0] + 0x1000;
     }
     
     //printf("SWITCHED CHR MODE: %d %0.8X - %0.8X, %0.8X\r\n", regControl & 0x10, data->chrData, chrBanks[0], chrBanks[1]);
@@ -79,6 +77,31 @@ void switch_prg_banks() {
     //printf("STOP %0.2X - %0.8X, %0.8X, %0.8X\r\n", regPrgBank, data->prgData, prgBanks[0], prgBanks[1]);
     
     switch_chr_banks();
+}
+
+static void mapper_save(FILE *fp) {
+    
+    fwrite(&regLoad, sizeof(byte), 1, fp);
+    fwrite(&regControl, sizeof(byte), 1, fp);
+    fwrite(&regChrBank0, sizeof(byte), 1, fp);
+    fwrite(&regChrBank1, sizeof(byte), 1, fp);
+    fwrite(&regPrgBank, sizeof(byte), 1, fp);
+    fwrite(&prgSize, sizeof(uint32_t), 1, fp);
+    fwrite(prgRam, sizeof(prgRam), 1, fp);
+    
+}
+
+static void mapper_load(FILE *fp) {
+    
+    fread(&regLoad, sizeof(byte), 1, fp);
+    fread(&regControl, sizeof(byte), 1, fp);
+    fread(&regChrBank0, sizeof(byte), 1, fp);
+    fread(&regChrBank1, sizeof(byte), 1, fp);
+    fread(&regPrgBank, sizeof(byte), 1, fp);
+    fread(&prgSize, sizeof(uint32_t), 1, fp);
+    fread(prgRam, sizeof(prgRam), 1, fp);
+    
+    switch_prg_banks();
 }
 
 void mapper_sxrom_write_prg(uint16_t addr, byte value) {
@@ -209,6 +232,8 @@ struct Mapper *mapper_sxrom_create(struct NesData *data) {
     m->readCHR = mapper_sxrom_read_chr;
     m->writeCHR = mapper_sxrom_write_chr;
     m->getPagePointer = mapper_sxrom_get_page;
+    m->save = mapper_save;
+    m->load = mapper_load;
     
     m->mirroringType = data->header.mainFlags.flags6 & 1;
     

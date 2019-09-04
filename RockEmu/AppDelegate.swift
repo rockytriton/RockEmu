@@ -345,7 +345,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         //print(String(format: "detached: vendor %04x device %04x", v, p))
     }
     
+    @IBAction func onLoadState(_ sender: Any) {
+        system_load_state();
+    }
     
+    @IBAction func onSaveState(_ sender: Any) {
+        system_save_state();
+    }
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application

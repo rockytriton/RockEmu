@@ -201,6 +201,8 @@ unsigned long prevMs = 0;
 #define BILLION  1000000000.0;
 //#define BILLION  1000000000L
 
+bool wasPause = false;
+
 void cpu_run() {
     timer_init();
     
@@ -222,13 +224,20 @@ void cpu_run() {
         }
         
         if (cpuData.paused) {
+            wasPause = true;
+            
             if (cpuData.stepping) {
                 cpuData.stepping = 0;
             } else {
-                //printf("paused\r\n");
+                printf("paused\r\n");
                 usleep(1500);
                 continue;
             }
+            
+        }
+        if (wasPause) {
+            printf("Resuming...\r\n");
+            wasPause = false;
         }
         
         timer_update();
@@ -260,12 +269,16 @@ void cpu_run() {
                 ftime(&end);
                 int diff = (int) (1000.0 * (end.time - start.time) + (end.millitm - start.millitm));
                 
-                usleep(3000 - diff);
+                usleep(300 - diff);
                 curFrame = p->curFrame;
                 ftime(&start);
             }
             
             cycleCount++;
+            
+            if (cpuData.paused) {
+                break;
+            }
         }
         
         usleep(1000);
