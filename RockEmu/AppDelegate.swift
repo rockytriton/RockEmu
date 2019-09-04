@@ -12,7 +12,7 @@ import IOKit
 import IOKit.usb
 import IOKit.hid
 
-let runloop : CFRunLoop = CFRunLoopGetCurrent()
+var devices : CFSet? = nil
 
 var valueCallback : IOHIDValueCallback = {
     (context, result, sender, value) in
@@ -23,36 +23,84 @@ var valueCallback : IOHIDValueCallback = {
     
     var event : CGEvent?
     
+    //controller_set(0, UInt8(BUTTON_ST), 0);
+    
     switch cookie {
     case 7:     /* Button 1 */
         print("Button 1: ", code)
     //event = generateMediaKeyEvent(key: NX_KEYTYPE_SOUND_DOWN, down: code == 1)
-    case 8:     /* Button 2 */
-        print("Button 2: ", code)
-    //event = generateMediaKeyEvent(key: NX_KEYTYPE_PREVIOUS, down: code == 1)
-    case 9:     /* Button 3 */
+    case 3:     /* Button 2 */
         print("Button 3: ", code)
+        controller_set(0, UInt8(BUTTON_B), UInt8(code));
+    //event = generateMediaKeyEvent(key: NX_KEYTYPE_PREVIOUS, down: code == 1)
+    case 4:     /* Button 3 */
+        print("Button 4: ", code)
+        controller_set(0, UInt8(BUTTON_A), UInt8(code));
     //event = generateMediaKeyEvent(key: NX_KEYTYPE_PLAY, down: code == 1)
     case 10:     /* Button 4 */
         print("Button 4: ", code)
+        controller_set(0, UInt8(BUTTON_SE), UInt8(code));
     //event = generateMediaKeyEvent(key: NX_KEYTYPE_NEXT, down: code == 1)
     case 11:     /* Button 5 */
         print("Button 5: ", code)
+        controller_set(0, UInt8(BUTTON_ST), UInt8(code));
     //event = generateMediaKeyEvent(key: NX_KEYTYPE_SOUND_UP, down: code == 1)
     case 16:    /* Jog Dial */
         print("Jog Dial: ", code)
+        if (code == 0) {
+            controller_set(0, UInt8(BUTTON_U), UInt8(1));
+            controller_set(0, UInt8(BUTTON_R), UInt8(0));
+            controller_set(0, UInt8(BUTTON_D), UInt8(0));
+            controller_set(0, UInt8(BUTTON_L), UInt8(0));
+        } else if (code == 1) {
+            controller_set(0, UInt8(BUTTON_U), UInt8(1));
+            controller_set(0, UInt8(BUTTON_R), UInt8(1));
+            controller_set(0, UInt8(BUTTON_D), UInt8(0));
+            controller_set(0, UInt8(BUTTON_L), UInt8(0));
+        } else if (code == 2) {
+            controller_set(0, UInt8(BUTTON_U), UInt8(0));
+            controller_set(0, UInt8(BUTTON_R), UInt8(1));
+            controller_set(0, UInt8(BUTTON_D), UInt8(0));
+            controller_set(0, UInt8(BUTTON_L), UInt8(0));
+        } else if (code == 3) {
+            controller_set(0, UInt8(BUTTON_U), UInt8(0));
+            controller_set(0, UInt8(BUTTON_R), UInt8(1));
+            controller_set(0, UInt8(BUTTON_D), UInt8(1));
+            controller_set(0, UInt8(BUTTON_L), UInt8(0));
+        } else if (code == 4) {
+            controller_set(0, UInt8(BUTTON_U), UInt8(0));
+            controller_set(0, UInt8(BUTTON_R), UInt8(0));
+            controller_set(0, UInt8(BUTTON_D), UInt8(1));
+            controller_set(0, UInt8(BUTTON_L), UInt8(0));
+        } else if (code == 5) {
+            controller_set(0, UInt8(BUTTON_U), UInt8(0));
+            controller_set(0, UInt8(BUTTON_R), UInt8(0));
+            controller_set(0, UInt8(BUTTON_D), UInt8(1));
+            controller_set(0, UInt8(BUTTON_L), UInt8(1));
+        } else if (code == 6) {
+            controller_set(0, UInt8(BUTTON_U), UInt8(0));
+            controller_set(0, UInt8(BUTTON_R), UInt8(0));
+            controller_set(0, UInt8(BUTTON_D), UInt8(0));
+            controller_set(0, UInt8(BUTTON_L), UInt8(1));
+        } else if (code == 15) {
+            controller_set(0, UInt8(BUTTON_U), UInt8(0));
+            controller_set(0, UInt8(BUTTON_R), UInt8(0));
+            controller_set(0, UInt8(BUTTON_D), UInt8(0));
+            controller_set(0, UInt8(BUTTON_L), UInt8(0));
+        }
         event = nil
     case 17:    /* Wheel */
         print("Wheel   : ", code)
         event = nil
     default:
-        print("Unknown element")
+        //print("Unknown element: ", cookie)
         event = nil
     }
     
     if (event != nil) {
-        event!.post(tap:.cgSessionEventTap)
+        //event!.post(tap:.cgSessionEventTap)
     }
+    //CFRunLoopRun();
 }
 
 var devattachCallback : IOHIDCallback = {
@@ -99,7 +147,7 @@ func gamepadEvent(_ context: UnsafeMutableRawPointer?, _ result: IOReturn, _ sen
     let elementType = IOHIDElementGetType(element)
     let usage = IOHIDElementGetUsage(element)
     
-    print("USAGE: ", usage, " VAL: ", IOHIDValueGetIntegerValue(value))
+    print("USAGE: ", usage, " VAL: ", IOHIDValueGetIntegerValue(value), "DEV: ", gamepad.device)
     
     if elementType == kIOHIDElementTypeInput_Button {
         let pressed = (IOHIDValueGetIntegerValue(value) != 0)
@@ -110,13 +158,15 @@ func gamepadEvent(_ context: UnsafeMutableRawPointer?, _ result: IOReturn, _ sen
         
     }
     
+    CFRunLoopRun();
+    
     // TODO: Handle hatswitches correctly
     
 }
 
 func deviceAdded(_ inContext: UnsafeMutableRawPointer?, inResult: IOReturn, inSender: UnsafeMutableRawPointer?, deviceRef: IOHIDDevice!) {
     
-    if IOHIDDeviceConformsTo(deviceRef, UInt32(kHIDPage_GenericDesktop), UInt32(kHIDUsage_GD_GamePad)) || IOHIDDeviceConformsTo(deviceRef, UInt32(kHIDPage_GenericDesktop), UInt32(kHIDUsage_GD_Joystick)) {
+    if IOHIDDeviceConformsTo(deviceRef, UInt32(kHIDPage_GenericDesktop), UInt32(kHIDUsage_GD_GamePad)) {
         
         print("gamepad added!")
         
@@ -134,7 +184,14 @@ func deviceAdded(_ inContext: UnsafeMutableRawPointer?, inResult: IOReturn, inSe
          idx += 1
          }
         
-         IOHIDDeviceRegisterInputValueCallback(deviceRef, gamepadEvent, &controllers.gamepads[idx])
+        print("adding cb")
+        IOHIDDeviceRegisterInputValueCallback(deviceRef, valueCallback, &controllers.gamepads[idx])
+        
+        var ret = IOHIDDeviceOpen(deviceRef, IOOptionBits(kIOHIDOptionsTypeSeizeDevice))
+        IOHIDDeviceScheduleWithRunLoop(deviceRef, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode.rawValue)
+        
+        print("scheduled")
+        CFRunLoopRun();
  
     }
     else if IOHIDDeviceConformsTo(deviceRef, UInt32(kHIDPage_GenericDesktop), UInt32(kHIDUsage_GD_Keyboard)) || IOHIDDeviceConformsTo(deviceRef, UInt32(kHIDPage_GenericDesktop), UInt32(kHIDUsage_GD_Keypad)) {
@@ -171,21 +228,21 @@ func deviceRemoved(_ inContext: UnsafeMutableRawPointer?, inResult: IOReturn, in
     
 }
 
+func createDeviceMatchingDictionary( usagePage: Int, usage: Int) -> CFMutableDictionary {
+    let dict = [
+        kIOHIDDeviceUsageKey: usage,
+        kIOHIDDeviceUsagePageKey: usagePage
+        ] as NSDictionary
+    
+    return dict.mutableCopy() as! NSMutableDictionary;
+}
+
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     var nesData : NesData?
     
     var worker : DispatchQueue?
-    
-    
-    private func createDeviceMatchingDictionary( usagePage: Int, usage: Int) -> CFMutableDictionary {
-        let dict = [
-            kIOHIDDeviceUsageKey: usage,
-            kIOHIDDeviceUsagePageKey: usagePage
-            ] as NSDictionary
-        
-        return dict.mutableCopy() as! NSMutableDictionary;
-    }
+
 
     @IBAction func onOpen(_ sender: Any) {
         bus_init();
@@ -297,50 +354,55 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         var worker2 = DispatchQueue(label: "gp");
-        DispatchQueue.main.async {
+        worker2.async {
             
-            print("RUNNING LOOP")
-            CFRunLoopRun()
-            print("RUN DONE")
+            let manager = IOHIDManagerCreate(kCFAllocatorDefault, IOOptionBits(kIOHIDOptionsTypeNone));
+            let keyboard = createDeviceMatchingDictionary(usagePage: kHIDPage_GenericDesktop, usage: kHIDUsage_GD_GamePad)
+            
+            IOHIDManagerOpen(manager, IOOptionBits(kIOHIDOptionsTypeNone) )
+            IOHIDManagerSetDeviceMatching(manager, keyboard)
+            
+            let Handle_DeviceMatchingCallback: IOHIDDeviceCallback = {context, result, sender, device in
+            }
+            let Handle_DeviceRemovalCallback: IOHIDDeviceCallback = {context, result, sender, device in
+                print("Disconnected")
+            }
+            
+            devices = IOHIDManagerCopyDevices(manager)
+            
+            if (devices != nil) {
+                print("Found devices!", devices!)
+                let n = CFSetGetCount(devices!)
+                let array = UnsafeMutablePointer<UnsafeRawPointer?>.allocate(capacity: n)
+                array.initialize(repeating: nil, count: n)
+                CFSetGetValues(devices!, array);
+                
+                IOHIDManagerRegisterDeviceMatchingCallback(manager, deviceAdded, nil)
+                IOHIDManagerRegisterDeviceRemovalCallback(manager, deviceRemoved, nil)
+                
+                
+                IOHIDManagerScheduleWithRunLoop(manager, CFRunLoopGetCurrent(),
+                                                CFRunLoopMode.defaultMode.rawValue)
+                IOHIDManagerOpen(manager, IOOptionBits(kIOHIDOptionsTypeNone))
+                
+                CFRunLoopRun()
+            }
+            else {
+                print("Did not find any devices :(")
+            }
+            
+            while(true) {
+                print("RUNNING LOOP")
+                CFRunLoopRun()
+                print("RUN DONE")
+            }
         }
         
         self.test()
-        /*
-        let manager = IOHIDManagerCreate(kCFAllocatorDefault, IOOptionBits(kIOHIDOptionsTypeNone));
-        let keyboard = createDeviceMatchingDictionary(usagePage: kHIDPage_GenericDesktop, usage: kHIDUsage_GD_GamePad)
         
-        IOHIDManagerOpen(manager, IOOptionBits(kIOHIDOptionsTypeNone) )
-        IOHIDManagerSetDeviceMatching(manager, keyboard)
         
-        let Handle_DeviceMatchingCallback: IOHIDDeviceCallback = {context, result, sender, device in
-        }
-        let Handle_DeviceRemovalCallback: IOHIDDeviceCallback = {context, result, sender, device in
-            print("Disconnected")
-        }
-        
-        let devices = IOHIDManagerCopyDevices(manager)
-        
-        if (devices != nil) {
-            print("Found devices!", devices!)
-            let n = CFSetGetCount(devices!)
-            let array = UnsafeMutablePointer<UnsafeRawPointer?>.allocate(capacity: n)
-            array.initialize(repeating: nil, count: n)
-            CFSetGetValues(devices!, array);
-            
-            IOHIDManagerRegisterDeviceMatchingCallback(manager, deviceAdded, nil)
-            IOHIDManagerRegisterDeviceRemovalCallback(manager, detachCallback, nil)
-            
-            
-            IOHIDManagerScheduleWithRunLoop(manager, runloop,
-                                            CFRunLoopMode.defaultMode.rawValue)
-            IOHIDManagerOpen(manager, IOOptionBits(kIOHIDOptionsTypeNone))
-            CFRunLoopRun()
-        }
-        else {
-            print("Did not find any devices :(")
          
-         
-         
+         /*
          
          let matchingDictionaries = [
          [
@@ -359,7 +421,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
          ]
         }*/
         
-        
+        /*
         let manager = IOHIDManagerCreate(kCFAllocatorDefault, UInt32(kIOHIDOptionsTypeNone))
         
         let matchingDictionaries = [
@@ -373,7 +435,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         IOHIDManagerRegisterDeviceRemovalCallback(manager, deviceRemoved, nil)
         IOHIDManagerScheduleWithRunLoop(manager, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode.rawValue)
         IOHIDManagerOpen(manager, UInt32(kIOHIDOptionsTypeNone))
-        
+        */
         //CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSource, .commonModes)
         //CFRunLoopRun()
     }

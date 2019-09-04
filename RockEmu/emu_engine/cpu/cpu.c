@@ -166,7 +166,7 @@ void cpu_clock() {
     
     //DOLOG("ADDED HISTORY ITEM: %0.16X\r\n", history[HISTORY_SIZE - 1].opCode.name);
     
-#if ISLOGGING
+#if 0
     printf("%0.8X %0.4X %s (%0.2X) $%0.4X, %0.4X = %0.2X - A: %0.2X X: %0.2X Y: %0.2X SP: %0.2X CYC: %4d  - P: %0.2X ADDRINFO\r\n", counter++,
            oldPc, opCode.name, opCode.code, cpuData.addr_abs, cpuData.addr_rel, cpuData.fetched,
            cpuData.regA, cpuData.regX, cpuData.regY, cpuData.sp, ppuData.cycle, cpuData.regStatus);

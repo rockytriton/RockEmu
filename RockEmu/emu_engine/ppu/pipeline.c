@@ -57,7 +57,6 @@ int doDumpRam= 0;
 void ppu_prerender(struct PpuData *ppuData) {
     //DOLOG("PR: %4d\r\n", ppuData->cycle);
     if (ppuData->cycle == 1) {
-        SET_FLAG(ppuData->regStatus, PPUSTAT_V, 0);
         SET_FLAG(ppuData->regStatus, PPUSTAT_S, 0);
         
         if (doDumpRam) {
@@ -81,6 +80,7 @@ void ppu_prerender(struct PpuData *ppuData) {
         ppuData->pipelineState = PPU_STATE_RENDER;
         ppuData->cycle = 0; //veryfirst ? -1 : 0;
         ppuData->scanLine = 0;
+        SET_FLAG(ppuData->regStatus, PPUSTAT_V, 0);
         veryfirst = false;
     }
 }

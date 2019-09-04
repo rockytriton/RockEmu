@@ -133,7 +133,7 @@ class EmuView: NSView {
         
         lastFrame = ppuData.pointee.curFrame
         
-        print("Drawing Frame: ", lastFrame)
+        //print("Drawing Frame: ", lastFrame)
         
         var pb = ppu_data().pictureBuffer;
         var i = 0;
@@ -226,7 +226,7 @@ class EmuView: NSView {
     override func keyDown(with event: NSEvent) {
         var kc = event.keyCode
         
-        print("KEY CODE: ", kc);
+        //print("KEY CODE: ", kc);
         
         if (!keyStart && kc == 36) {
             controller_set(0, UInt8(BUTTON_ST), 1);

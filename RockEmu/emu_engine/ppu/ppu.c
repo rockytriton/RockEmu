@@ -77,7 +77,7 @@ void ppu_init() {
     ppuData.scanLineSpritesSize = 0;
     ppuData.spriteMemory = (uint8_t *)malloc(64 * 4);
     memset(ppuData.spriteMemory, 0, 64 * 4);
-    ppuData.curFrame = 0;
+    ppuData.curFrame = 261;
     
     ppuData.pictureBuffer = (uint32_t **)malloc(sizeof(uint32_t *) * ScanlineVisibleDots);
     
@@ -95,6 +95,9 @@ void ppu_init() {
     SET_FLAG(ppuData.regMask, PPUMASK_BLE, 1);
     
     ppu_bus_init();
+    
+    SET_FLAG(ppuData.regStatus, PPUSTAT_O, 1);
+    SET_FLAG(ppuData.regStatus, PPUSTAT_V, 1);
 }
 
 int ppuCount = 0;
@@ -150,6 +153,11 @@ void ppu_clock() {
             break;
     }
     
+    //printf("PPU: %0.2X, %0.2X\r\n", ppuData.regStatus, ppuData.regControl);
+    
+    if (ppuData.cycle > 300) {
+        //printf("OK");
+    }
     
     ppuData.cycle++;
 }
@@ -162,9 +170,16 @@ void ppu_oam_data_write(uint8_t data) {
 }
 
 uint8_t ppu_read_status(void) {
-    uint8_t temp = ppuData.regStatus;
+    uint8_t temp = ppuData.regStatus & 0xE0;
+    temp |= ppuData.regControl & 0x1F;
+    
     ppuData.firstWrite = true;
     SET_FLAG(ppuData.regStatus, PPUSTAT_V, 0);
+    
+    if (ppuData.scanLine == 241 && ppuData.cycle == 0)
+        temp &= ~0x80; // set V to 0 in the retval
+    
+    //printf("Read status: %0.2X\r\n", temp);
     
     return temp;
 }

@@ -78,6 +78,8 @@ uint8_t ppu_bus_read_palette(uint8_t addr) {
 }
 
 void ppu_bus_write(uint16_t addr, uint8_t value) {
+    //printf("PPUBUS WRITE: %0.4X\r\n", addr);
+    
     if (addr < 0x2000) {
         mapper_get_current()->writeCHR(addr, value);
         return;

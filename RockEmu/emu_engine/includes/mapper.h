@@ -41,6 +41,10 @@ struct Mapper *mapper_create(struct NesData *data);
 
 struct Mapper *mapper_get_current(void);
 
+bool mapper_has_ext_ram(void);
+
+bool mapper_full_ram(void);
+
 /*
  MapperNROM(Cartridge& cart);
  void writePRG (Address addr, Byte value);

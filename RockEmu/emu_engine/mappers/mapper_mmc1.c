@@ -28,103 +28,17 @@ static uint8_t *chrRam;
 static uint32_t chrSize = 0;
 static uint32_t prgSize = 0;
 
-static struct Mapper *thisMapper;
-
 int dumpedBank = 0;
 extern int counter;
 
 uint8_t mapper_mm1_read_prg(uint16_t addr) {
     
-    if (*(prgBanks[0] + 0x30C) == 0x20) {
-        //printf("SOMETHING GOOD\r\n");
-        //printf("SOMETHING GOOD\r\n");
-    }
-    
-    if (*(prgBanks[0] + 0x30C) == 0x66) {
-        //printf("SOMETHING WORNG\r\n");
-    }
-    
-    if (addr == 0x830C) {
-        
-        
-        
-        {
-            //printf("LOCATIONOF PRGBANK1: %0.8X\r\n", prgBanks[0]);
-            for (int i=0; i<0x4000; i++) {
-                //printf("%0.2X ", *(prgBanks[0] + (i & 0x3FFF)));
-                
-                if ((i % 16) == 0) {
-                    //printf("\r\n");
-                }
-                
-                dumpedBank = 1;
-            }
-        }
-        
-        
-        uint8_t *p = prgBanks[0];
-        uint8_t bt = p[addr & 0x3FFF];
-        
-        int a = addr & 0x3FFF;
-        
-        for (int i=a - 10; i < a + 10; i++) {
-            //printf("%0.4X %0.2X", i, p[i]);
-            
-            if (i == 0x30C) {
-                //printf("*");
-            }
-            
-            //printf("\r\n");
-        }
-        
-        
-        
-        if (*(prgBanks[0] + 0x30C) == 0x66) {
-            //printf("SOMETHING WORNG\r\n");
-        } else {
-            //printf("NOPE: %0.2X (%0.4X)\r\n", *(prgBanks[0] + 0x30C), addr & 0x3FFF);
-            //printf("NOPE: %0.2X (%0.4X)\r\n", *(p + 0x30C), addr & 0x3FFF);
-        }
-        
-        //printf("SUMFIN FUKY\r\n");
-    }
-    
     if (addr < 0xC000) {
         return *(prgBanks[0] + (addr & 0x3FFF));
     }
     
-    uint8_t *p = prgBanks[1];
-    uint32_t t1 = p;
-    uint16_t m = addr & 0x3FFF;
-    p += m;
-    uint32_t t2 = p;
-    
-    uint8_t b = *p;
-    
     uint8_t bd = *(prgBanks[1] + (addr & 0x3FFF));
-    
-    if (counter > 100 && (addr == 0xC191 && bd == 0)) {
-        ///printf("HIT BAD SPOT: %0.4X - %0.2X\r\n", addr, bd);
-        dumpedBank = 0;
-        //return bd;
-    }
-    
-    if (!dumpedBank) {
-        //printf("LOCATIONOF PRGBANK1: %0.8X\r\n", prgBanks[0]);
-    for (int i=0; i<0x4000; i++) {
-        //printf("%0.2X ", *(prgBanks[0] + (i & 0x3FFF)));
-        
-        if ((i % 16) == 0) {
-            //printf("\r\n");
-        }
-        
-        dumpedBank = 1;
-    }
-    }
-    if (counter > 100 && (addr == 0xC191 && bd == 0)) {
-        //printf("CHZ\r\n");
-    }
-    
+
     return bd;
 }
 
@@ -139,14 +53,8 @@ void mapper_mm1_calc_prg() {
         prgBanks[1] = prgBanks[0] + 0x4000;
     } else if (modePRG == 2) {
         prgBanks[0] = data->prgData;
-        prgBanks[1] = prgBanks[0] + 0x4000 * regPrg;
+        prgBanks[1] = prgBanks[0] + (0x4000 * regPrg);
     } else {
-        if (regPrg != 0) {
-        ///printf("OK REG IS %0.2X = %d\r\n", regPrg, regPrg);
-        //printf("OLD ADDR: %0.8X\r\n", data->prgData);
-        //printf("ADD ADDR: %0.8X\r\n", (0x4000 * regPrg));
-        //printf("NEW ADDR: %0.8X\r\n", data->prgData + (0x4000 * regPrg));
-        }
         prgBanks[0] = data->prgData + (0x4000 * regPrg);
         prgBanks[1] = data->prgData + (prgSize - 0x4000);
     }
@@ -157,16 +65,91 @@ void mapper_mm1_calc_prg() {
     }
 }
 
-void mapper_mm1_write_prg(uint16_t addr, uint8_t value) {
+void calculatePrgPointers() {
+    struct NesData *data = cartridge_get_data();
     
-    if (addr == 0xFFFF) {
-        //printf("OK: %0.2X\r\n", value);
+    if (modePRG <= 1) {
+        prgBanks[0] = &data->prgData[0x4000 * (regPrg & ~1)];
+        prgBanks[1] = prgBanks[0] + 0x4000;
+    } else if (modePRG == 2) {
+        prgBanks[0] = &data->prgData[0];
+        prgBanks[1] = prgBanks[0] + 0x4000 * regPrg;
+    } else {
+        prgBanks[0] = &data->prgData[0x4000 * regPrg];
+        prgBanks[1] = &data->prgData[prgSize - 0x4000];
     }
-    
+}
+
+void mapper_mm1_write_prgx(uint16_t addr, uint8_t value) {
+    if (!(value & 0x80)) {
+        regTmp = (regTmp >> 1) | ((value & 1) << 4);
+        writeCounter++;
+        
+        struct NesData *data = cartridge_get_data();
+        
+        if (writeCounter == 5) {
+            if (addr <= 0x9fff) {
+                switch(regTmp & 0x3) {
+                    case 0: mapper_get_current()->mirroringType = OneScreenLower; break;
+                    case 1: mapper_get_current()->mirroringType = OneScreenHigher; break;
+                    case 2: mapper_get_current()->mirroringType = Vertical; break;
+                    case 3: mapper_get_current()->mirroringType = Horizontal; break;
+                }
+                
+                ppu_bus_update_mirroring();
+                
+                modeCHR = (regTmp & 0x10) >> 4;
+                modePRG = (regTmp & 0xC) >> 2;
+                
+                calculatePrgPointers();
+                
+                if (modeCHR == 0) {
+                    chrBanks[0] = &data->chrData[0x1000 * (regChr0 | 1)];
+                    chrBanks[1] = chrBanks[0] + 0x1000;
+                } else {
+                    chrBanks[0] = &data->chrData[0x1000 * (regChr0)];
+                    chrBanks[1] = &data->chrData[0x1000 * (regChr1)];
+                }
+            } else if (addr < 0xbfff) {
+                regChr0 = regTmp;
+                
+                chrBanks[0] = &data->chrData[0x1000 * (regTmp | (1 - modeCHR))];
+                
+                if (modeCHR == 0) {
+                    chrBanks[1] = chrBanks[0] + 0x1000;
+                }
+            } else if (addr <= 0xdfff) {
+                regChr1 = regTmp;
+                
+                if (modeCHR == 1) {
+                    chrBanks[1] = &data->chrData[0x1000 * regTmp];
+                }
+            } else {
+                regTmp &= 0xf;
+                regPrg = regTmp;
+                
+                calculatePrgPointers();
+            }
+            
+            regTmp = 0;
+            writeCounter = 0;
+        }
+    } else {
+        regTmp = 0;
+        writeCounter = 0;
+        modePRG = 3;
+        
+        calculatePrgPointers();
+        
+        
+    }
+}
+
+void mapper_mm1_write_prg(uint16_t addr, uint8_t value) {
+
     uint8_t resetNotSet = (!(value & 0x80));
     
     if (!resetNotSet) {
-        //printf("NOT RESET NOT SET\r\n");
         regTmp = 0;
         writeCounter = 0;
         modePRG = 3;
@@ -175,11 +158,9 @@ void mapper_mm1_write_prg(uint16_t addr, uint8_t value) {
     }
     
     regTmp = (regTmp >> 1) | ((value & 1) << 4);
-    //printf("REGTMP: %0.2X\r\n", regTmp);
     writeCounter++;
     
     if (writeCounter != 5) {
-        //printf("NOT COUNTER: %d\r\n", writeCounter);
         return;
     }
     
@@ -187,11 +168,11 @@ void mapper_mm1_write_prg(uint16_t addr, uint8_t value) {
     
     if (addr <= 0x9fff) {
         
-        switch(regTmp) {
-            case 0: thisMapper->mirroringType = OneScreenLower; break;
-            case 1: thisMapper->mirroringType = OneScreenHigher; break;
-            case 2: thisMapper->mirroringType = Vertical; break;
-            case 3: thisMapper->mirroringType = Horizontal; break;
+        switch(regTmp & 0x3) {
+            case 0: mapper_get_current()->mirroringType = OneScreenLower; break;
+            case 1: mapper_get_current()->mirroringType = OneScreenHigher; break;
+            case 2: mapper_get_current()->mirroringType = Vertical; break;
+            case 3: mapper_get_current()->mirroringType = Horizontal; break;
         }
         
         ppu_bus_update_mirroring();
@@ -205,7 +186,7 @@ void mapper_mm1_write_prg(uint16_t addr, uint8_t value) {
             chrBanks[1] = chrBanks[0] + 0x1000;
         } else {
             chrBanks[0] = data->chrData + (0x1000 * regChr0);
-            chrBanks[1] = chrBanks[0] + (0x1000 * regChr1);
+            chrBanks[1] = data->chrData + (0x1000 * regChr1);
         }
     } else if (addr <= 0xbfff) {
         regChr0 = regTmp;
@@ -218,19 +199,13 @@ void mapper_mm1_write_prg(uint16_t addr, uint8_t value) {
         regChr1 = regTmp;
         
         if (modeCHR == 1) {
-            chrBanks[1] = chrBanks[0] + (0x1000 * regTmp);
+            chrBanks[1] = data->chrData + (0x1000 * regTmp);
         }
     } else {
         //TODO PRG-RAM...
         
         regTmp &= 0xf;
         regPrg = regTmp;
-        
-        ///printf("AND REGTMP %0.2X\r\n", regTmp);
-        
-        if (regPrg != 0) {
-            //printf("REGPRG: %0.2X\r\n", regPrg);
-        }
         
         mapper_mm1_calc_prg();
     }
@@ -250,7 +225,7 @@ uint8_t mapper_mm1_read_chr(uint16_t addr) {
     } else if (addr < 0x1000) {
         return *(chrBanks[0] + addr);
     } else {
-        return *(chrBanks[0] + (addr & 0xFFF));
+        return *(chrBanks[1] + (addr & 0xFFF));
     }
 }
 
@@ -269,7 +244,7 @@ struct Mapper *mapper_mm1_create(struct NesData *data) {
     if (chrSize) {
         usesCharRam = false;
         chrBanks[0] = data->chrData;
-        chrBanks[1] = data->chrData;
+        chrBanks[1] = data->chrData + (0x1000 * regChr1);
     } else {
         usesCharRam = true;
         chrRam = (uint8_t *)malloc(0x2000);
@@ -298,7 +273,7 @@ struct Mapper *mapper_mm1_create(struct NesData *data) {
     m->writeCHR = mapper_mm1_write_chr;
     m->getPagePointer = mapper_mm1_get_page;
     
-    m->mirroringType = Horizontal;
+    m->mirroringType = data->header.mainFlags.flags6 & 1;
     
     return m;
 }

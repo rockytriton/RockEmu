@@ -1,3 +1,4 @@
+
 //
 //  bus.c
 //  Emu6502
@@ -15,6 +16,7 @@
 
 uint8_t prg_ram[64 * 1024];
 uint8_t ram[0x800];
+uint8_t extRam[0x2000];
 
 uint8_t busInit = 0;
 
@@ -51,6 +53,8 @@ uint8_t *bus_read_ram(uint16_t address) {
 }
 
 void bus_write(uint16_t address, uint8_t value) {
+    //printf("BUS WRITE: %0.4X\r\n", address);
+    
     if (address < 0x2000) {
         ram[address & 0x7FF] = value;
         //printf("wrote ram at %0.4X = %0.2X\r\n", address & 0x7FF, value);
@@ -69,8 +73,9 @@ void bus_write(uint16_t address, uint8_t value) {
         //JOY1
         controller_write(value);
         return;
-    }
-    else if (address >= 0x8000) {
+    } else if (mapper_full_ram() && address >= 0x4020) {
+        return mapper_get_current()->writePRG(address, value);
+    } else if (address >= 0x8000) {
         //prg_ram[address] = value;
         mapper_get_current()->writePRG(address, value);
     } else if (address < 0x4000 && (address & 0x2007) == OAMDMA) {
@@ -97,6 +102,8 @@ void bus_write(uint16_t address, uint8_t value) {
     } else if (address < 0x4000 && (address & 0x2007) == JOY1) {
         controller_write(value);
         return;
+    } if (address < 0x8000 && mapper_has_ext_ram()) {
+        extRam[address - 0x6000] = value;
     } else {
         prg_ram[address] = value;
         return;
@@ -141,6 +148,13 @@ uint8_t bus_read(uint16_t address) {
         return ppu_read_mask();
     } else if (address < 0x4000 && address < 0x4000 && (address & 0x2007) == OAMDMA) {
         return ppu_oam_read();
+    } else if (mapper_full_ram() && address >= 0x4020) {
+        return mapper_get_current()->readPRG(address);
+    } else if (address < 0x8000) {
+        if (mapper_has_ext_ram()) {
+            return extRam[address - 0x6000];
+        }
+        //return prg_ram[address];
     } else if (address >= 0x8000) {
         return mapper_get_current()->readPRG(address);
         //return prg_ram[address];
@@ -171,4 +185,3 @@ uint8_t *bus_page_pointer(uint8_t page) {
     
     return 0;
 }
-

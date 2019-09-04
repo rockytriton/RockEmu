@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		F41FD07E231DFD36009BFC2D /* timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F41FD07D231DFD36009BFC2D /* timing.cpp */; };
+		F41FD085231EA3E4009BFC2D /* mapper_cnrom.c in Sources */ = {isa = PBXBuildFile; fileRef = F41FD084231EA3E4009BFC2D /* mapper_cnrom.c */; };
+		F41FD087231EA73F009BFC2D /* mapper_mmc3.c in Sources */ = {isa = PBXBuildFile; fileRef = F41FD086231EA73F009BFC2D /* mapper_mmc3.c */; };
 		F47EE558231CDE570082396F /* pipeline_new.c in Sources */ = {isa = PBXBuildFile; fileRef = F47EE557231CDE570082396F /* pipeline_new.c */; };
 		F4849F9E231814EB00DEF4BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4849F9D231814EB00DEF4BE /* AppDelegate.swift */; };
 		F4849FA0231814EB00DEF4BE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4849F9F231814EB00DEF4BE /* ViewController.swift */; };
@@ -50,6 +52,8 @@
 /* Begin PBXFileReference section */
 		F41FD07C231DFD36009BFC2D /* timing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = timing.h; sourceTree = "<group>"; };
 		F41FD07D231DFD36009BFC2D /* timing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = timing.cpp; sourceTree = "<group>"; };
+		F41FD084231EA3E4009BFC2D /* mapper_cnrom.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mapper_cnrom.c; sourceTree = "<group>"; };
+		F41FD086231EA73F009BFC2D /* mapper_mmc3.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mapper_mmc3.c; sourceTree = "<group>"; };
 		F47EE557231CDE570082396F /* pipeline_new.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pipeline_new.c; sourceTree = "<group>"; };
 		F4849F9A231814EB00DEF4BE /* RockEmu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RockEmu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4849F9D231814EB00DEF4BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -115,6 +119,73 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F41FD07F231EA287009BFC2D /* includes */ = {
+			isa = PBXGroup;
+			children = (
+				F41FD07C231DFD36009BFC2D /* timing.h */,
+				F4849FCF2318162200DEF4BE /* ppu.h */,
+				F4849FCE2318162200DEF4BE /* ppu_bus.h */,
+				F4849FCC2318162200DEF4BE /* pipeline.h */,
+				F4849FD92318162200DEF4BE /* op_codes.h */,
+				F4849FC22318162100DEF4BE /* mapper.h */,
+				F4849FCD2318162200DEF4BE /* instructions.h */,
+				F4849FD42318162200DEF4BE /* cpu.h */,
+				F4849FD32318162200DEF4BE /* controller.h */,
+				F4849FC12318162100DEF4BE /* common.h */,
+				F4849FD52318162200DEF4BE /* cartridge.h */,
+				F4849FC32318162100DEF4BE /* bus.h */,
+				F4849FC02318162100DEF4BE /* RockEmu-Bridging-Header.h */,
+				F4849FD82318162200DEF4BE /* addr_modes.h */,
+			);
+			path = includes;
+			sourceTree = "<group>";
+		};
+		F41FD080231EA32C009BFC2D /* cpu */ = {
+			isa = PBXGroup;
+			children = (
+				F4849FC62318162100DEF4BE /* op_codes.c */,
+				F4849FD72318162200DEF4BE /* instructions.cpp */,
+				F4849FCB2318162100DEF4BE /* instructions.c */,
+				F4849FD22318162200DEF4BE /* addr_modes.c */,
+				F4849FC82318162100DEF4BE /* cpu.c */,
+				F4849FC42318162100DEF4BE /* bus.c */,
+			);
+			path = cpu;
+			sourceTree = "<group>";
+		};
+		F41FD081231EA336009BFC2D /* ppu */ = {
+			isa = PBXGroup;
+			children = (
+				F4849FDB2318162200DEF4BE /* ppu.c */,
+				F4849FC92318162100DEF4BE /* ppu_bus.c */,
+				F4849FD12318162200DEF4BE /* pipeline.c */,
+				F47EE557231CDE570082396F /* pipeline_new.c */,
+			);
+			path = ppu;
+			sourceTree = "<group>";
+		};
+		F41FD082231EA357009BFC2D /* system */ = {
+			isa = PBXGroup;
+			children = (
+				F41FD07D231DFD36009BFC2D /* timing.cpp */,
+				F4849FD62318162200DEF4BE /* controller.c */,
+				F4849FCA2318162100DEF4BE /* cartridge.c */,
+			);
+			path = system;
+			sourceTree = "<group>";
+		};
+		F41FD083231EA35C009BFC2D /* mappers */ = {
+			isa = PBXGroup;
+			children = (
+				F4849FD02318162200DEF4BE /* mapper.c */,
+				F41FD084231EA3E4009BFC2D /* mapper_cnrom.c */,
+				F4849FC72318162100DEF4BE /* mapper_nrom.c */,
+				F4849FC52318162100DEF4BE /* mapper_mmc1.c */,
+				F41FD086231EA73F009BFC2D /* mapper_mmc3.c */,
+			);
+			path = mappers;
+			sourceTree = "<group>";
+		};
 		F4849F91231814EB00DEF4BE = {
 			isa = PBXGroup;
 			children = (
@@ -166,36 +237,11 @@
 		F4849FBF231815BE00DEF4BE /* emu_engine */ = {
 			isa = PBXGroup;
 			children = (
-				F4849FD22318162200DEF4BE /* addr_modes.c */,
-				F4849FD82318162200DEF4BE /* addr_modes.h */,
-				F4849FC42318162100DEF4BE /* bus.c */,
-				F4849FC32318162100DEF4BE /* bus.h */,
-				F4849FCA2318162100DEF4BE /* cartridge.c */,
-				F4849FD52318162200DEF4BE /* cartridge.h */,
-				F4849FC12318162100DEF4BE /* common.h */,
-				F4849FD62318162200DEF4BE /* controller.c */,
-				F4849FD32318162200DEF4BE /* controller.h */,
-				F4849FC82318162100DEF4BE /* cpu.c */,
-				F4849FD42318162200DEF4BE /* cpu.h */,
-				F4849FCB2318162100DEF4BE /* instructions.c */,
-				F4849FD72318162200DEF4BE /* instructions.cpp */,
-				F4849FCD2318162200DEF4BE /* instructions.h */,
-				F4849FC52318162100DEF4BE /* mapper_mmc1.c */,
-				F4849FC72318162100DEF4BE /* mapper_nrom.c */,
-				F4849FD02318162200DEF4BE /* mapper.c */,
-				F4849FC22318162100DEF4BE /* mapper.h */,
-				F4849FC62318162100DEF4BE /* op_codes.c */,
-				F4849FD92318162200DEF4BE /* op_codes.h */,
-				F47EE557231CDE570082396F /* pipeline_new.c */,
-				F4849FD12318162200DEF4BE /* pipeline.c */,
-				F4849FCC2318162200DEF4BE /* pipeline.h */,
-				F4849FC92318162100DEF4BE /* ppu_bus.c */,
-				F4849FCE2318162200DEF4BE /* ppu_bus.h */,
-				F4849FDB2318162200DEF4BE /* ppu.c */,
-				F4849FCF2318162200DEF4BE /* ppu.h */,
-				F4849FC02318162100DEF4BE /* RockEmu-Bridging-Header.h */,
-				F41FD07C231DFD36009BFC2D /* timing.h */,
-				F41FD07D231DFD36009BFC2D /* timing.cpp */,
+				F41FD07F231EA287009BFC2D /* includes */,
+				F41FD083231EA35C009BFC2D /* mappers */,
+				F41FD082231EA357009BFC2D /* system */,
+				F41FD081231EA336009BFC2D /* ppu */,
+				F41FD080231EA32C009BFC2D /* cpu */,
 			);
 			path = emu_engine;
 			sourceTree = "<group>";
@@ -312,7 +358,9 @@
 				F4849FE52318162200DEF4BE /* pipeline.c in Sources */,
 				F4849FEE2318330100DEF4BE /* CodeViewVC.swift in Sources */,
 				F4849F9E231814EB00DEF4BE /* AppDelegate.swift in Sources */,
+				F41FD087231EA73F009BFC2D /* mapper_mmc3.c in Sources */,
 				F4849FE42318162200DEF4BE /* mapper.c in Sources */,
+				F41FD085231EA3E4009BFC2D /* mapper_cnrom.c in Sources */,
 				F4849FBE231815B400DEF4BE /* EmuView.swift in Sources */,
 				F4849FDD2318162200DEF4BE /* mapper_mmc1.c in Sources */,
 				F4849FE22318162200DEF4BE /* cartridge.c in Sources */,
@@ -490,7 +538,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dreamsyssoft.RockEmu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "RockEmu/emu_engine/RockEmu-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "RockEmu/emu_engine/includes/RockEmu-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
@@ -512,7 +560,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dreamsyssoft.RockEmu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "RockEmu/emu_engine/RockEmu-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "RockEmu/emu_engine/includes/RockEmu-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
