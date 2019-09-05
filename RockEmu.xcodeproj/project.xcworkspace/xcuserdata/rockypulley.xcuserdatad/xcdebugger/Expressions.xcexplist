@@ -3,12 +3,18 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "mapper_nrom_create:mapper_nrom.c">
+         contextName = "ppu_clock:ppu.c">
          <PersistentStrings>
             <PersistentString
-               value = "data-&gt;header.mainFlags.flags6">
+               value = "ppuData.pictureBuffer[0][0]">
+            </PersistentString>
+            <PersistentString
+               value = "errno()">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "cartridge_load:cartridge.c">
       </ContextState>
       <ContextState
          contextName = "handle_LSR:instructions.c">
@@ -17,9 +23,6 @@
                value = "opCode">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "cartridge_load:cartridge.c">
       </ContextState>
       <ContextState
          contextName = "cpu_clock:cpu.c">
@@ -41,15 +44,40 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "ppu_clock:ppu.c">
+         contextName = "mapper_mm1_read_prg:mapper_mmc1.c">
          <PersistentStrings>
             <PersistentString
-               value = "ppuData.pictureBuffer[0][0]">
+               value = "addr &amp; 0x3FFF">
             </PersistentString>
             <PersistentString
-               value = "errno()">
+               value = "prgBanks[1]">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "mapper_nrom_create:mapper_nrom.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "data-&gt;header.mainFlags.flags6">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "render_visible_dots:pipeline.c">
+      </ContextState>
+      <ContextState
+         contextName = "system_load_state:system.c">
+      </ContextState>
+      <ContextState
+         contextName = "mapper_mm1_create:mapper_mmc1.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "data-&gt;header.prgSize">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "mapper_sxrom_read_prg:mapper_sxrom.c">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

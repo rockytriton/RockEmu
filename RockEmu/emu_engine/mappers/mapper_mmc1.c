@@ -28,25 +28,19 @@ static uint8_t *chrRam;
 static uint32_t chrSize = 0;
 static uint32_t prgSize = 0;
 
-static uint8_t *prgRom[8];
-static uint8_t *chrRom[8];
-
 int dumpedBank = 0;
 extern int counter;
 
 uint8_t mapper_mm1_read_prg(uint16_t addr) {
     
-    if (counter == 0x00006679) {
-        struct NesData *data = cartridge_get_data();
-        printf("STOP %0.8X, %0.8X, %0.8X\r\n", data->prgData, prgBanks[0], prgBanks[1]);
-    }
+    //printf("%0.8X, %0.8X\r\n", prgBanks[0], prgBanks[1]);
     
     if (addr < 0xC000) {
         return *(prgBanks[0] + (addr & 0x3FFF));
     }
     
     uint8_t bd = *(prgBanks[1] + (addr & 0x3FFF));
-
+    
     return bd;
 }
 
@@ -68,15 +62,93 @@ void mapper_mm1_calc_prg() {
     }
     
     if (prgBanks[0] != old0 || prgBanks[1] != old1) {
-
+        
         //printf("%0.8X PRGOLD: %0.8X %0.8X  - PRGNEW: %0.8X %0.8X\r\n", counter, old0, old1, prgBanks[0], prgBanks[1]);
     }
 }
 
-uint8_t control;
+void calculatePrgPointers() {
+    struct NesData *data = cartridge_get_data();
+    
+    if (modePRG <= 1) {
+        prgBanks[0] = &data->prgData[0x4000 * (regPrg & ~1)];
+        prgBanks[1] = prgBanks[0] + 0x4000;
+    } else if (modePRG == 2) {
+        prgBanks[0] = &data->prgData[0];
+        prgBanks[1] = prgBanks[0] + 0x4000 * regPrg;
+    } else {
+        prgBanks[0] = &data->prgData[0x4000 * regPrg];
+        prgBanks[1] = &data->prgData[prgSize - 0x4000];
+    }
+}
+
+void mapper_mm1_write_prgxx(uint16_t addr, uint8_t value) {
+    if (!(value & 0x80)) {
+        regTmp = (regTmp >> 1) | ((value & 1) << 4);
+        writeCounter++;
+        
+        struct NesData *data = cartridge_get_data();
+        
+        if (writeCounter == 5) {
+            if (addr <= 0x9fff) {
+                switch(regTmp & 0x3) {
+                    case 0: mapper_get_current()->mirroringType = OneScreenLower; break;
+                    case 1: mapper_get_current()->mirroringType = OneScreenHigher; break;
+                    case 2: mapper_get_current()->mirroringType = Vertical; break;
+                    case 3: mapper_get_current()->mirroringType = Horizontal; break;
+                }
+                
+                ppu_bus_update_mirroring();
+                
+                modeCHR = (regTmp & 0x10) >> 4;
+                modePRG = (regTmp & 0xC) >> 2;
+                
+                calculatePrgPointers();
+                
+                if (modeCHR == 0) {
+                    chrBanks[0] = &data->chrData[0x1000 * (regChr0 | 1)];
+                    chrBanks[1] = chrBanks[0] + 0x1000;
+                } else {
+                    chrBanks[0] = &data->chrData[0x1000 * (regChr0)];
+                    chrBanks[1] = &data->chrData[0x1000 * (regChr1)];
+                }
+            } else if (addr < 0xbfff) {
+                regChr0 = regTmp;
+                
+                chrBanks[0] = &data->chrData[0x1000 * (regTmp | (1 - modeCHR))];
+                
+                if (modeCHR == 0) {
+                    chrBanks[1] = chrBanks[0] + 0x1000;
+                }
+            } else if (addr <= 0xdfff) {
+                regChr1 = regTmp;
+                
+                if (modeCHR == 1) {
+                    chrBanks[1] = &data->chrData[0x1000 * regTmp];
+                }
+            } else {
+                regTmp &= 0xf;
+                regPrg = regTmp;
+                
+                calculatePrgPointers();
+            }
+            
+            regTmp = 0;
+            writeCounter = 0;
+        }
+    } else {
+        regTmp = 0;
+        writeCounter = 0;
+        modePRG = 3;
+        
+        calculatePrgPointers();
+        
+        
+    }
+}
 
 void mapper_mm1_write_prg(uint16_t addr, uint8_t value) {
-
+    
     uint8_t resetNotSet = (!(value & 0x80));
     
     if (!resetNotSet) {
@@ -84,7 +156,6 @@ void mapper_mm1_write_prg(uint16_t addr, uint8_t value) {
         writeCounter = 0;
         modePRG = 3;
         mapper_mm1_calc_prg();
-        control = 0x10;
         return;
     }
     
@@ -98,8 +169,6 @@ void mapper_mm1_write_prg(uint16_t addr, uint8_t value) {
     struct NesData *data = cartridge_get_data();
     
     if (addr <= 0x9fff) {
-        
-        control = regTmp;
         
         switch(regTmp & 0x3) {
             case 0: mapper_get_current()->mirroringType = OneScreenLower; break;
@@ -117,61 +186,23 @@ void mapper_mm1_write_prg(uint16_t addr, uint8_t value) {
         if (modeCHR == 0) {
             chrBanks[0] = data->chrData + (0x1000 * (regChr0 | 1));
             chrBanks[1] = chrBanks[0] + 0x1000;
-            
-            printf("Switch mode 0 chr, %0.2X - %0.2X, %0.2X, %0.2X, %0.2X\r\n", regChr0, chrBanks[0][0] , chrBanks[0][1], chrBanks[1][0] , chrBanks[1][1] );
         } else {
-            printf("Switch mode 1 chr, %0.2X\r\n", regChr0);
             chrBanks[0] = data->chrData + (0x1000 * regChr0);
             chrBanks[1] = data->chrData + (0x1000 * regChr1);
         }
-        
-        printf("ASWITCHED CHR MODE: %d %0.8X - %0.8X, %0.8X\r\n", control & 0x10, data->chrData, chrBanks[0], chrBanks[1]);
-        printf("Switch mode 0 chr, %0.2X - %0.2X, %0.2X, %0.2X, %0.2X\r\n", regChr0, chrBanks[0][0] , chrBanks[0][1], chrBanks[1][0] , chrBanks[1][1] );
-        
     } else if (addr <= 0xbfff) {
-        if (control & 0x10) {
-            uint32_t addr = (regTmp  & 0x1f) << 12;
-            uint16_t size = 0x1000;
-            
-            chrBanks[0] = data->chrData + addr;
-        } else {
-            uint32_t addr = (regTmp  & 0x1e) << 12;
-            uint16_t size = 0x2000;
-            
-            chrBanks[0] = data->chrData + addr;
-        }
-        
-        printf("BSWITCHED CHR MODE: %d %0.8X - %0.8X, %0.8X\r\n", control & 0x10, data->chrData, chrBanks[0], chrBanks[1]);
-        printf("Switch mode 0 chr, %0.2X - %0.2X, %0.2X, %0.2X, %0.2X\r\n", regChr0, chrBanks[0][0] , chrBanks[0][1], chrBanks[1][0] , chrBanks[1][1] );
-        /*
         regChr0 = regTmp;
         chrBanks[0] = data->chrData + (0x1000 * (regTmp | (1 - modeCHR)));
         
         if (modeCHR == 0) {
             chrBanks[1] = chrBanks[0] + 0x1000;
-        }*/
-    } else if (addr <= 0xdfff) {
-        if (control & 0x10) {
-            uint32_t addr = (regTmp  & 0x1f) << 12;
-            uint16_t size = 0x1000;
-            
-            chrBanks[1] = data->chrData + addr;
-        } else {
-            
         }
+    } else if (addr <= 0xdfff) {
+        regChr1 = regTmp;
         
-        printf("CSWITCHED CHR MODE: %d %0.8X - %0.8X, %0.8X\r\n", control & 0x10, data->chrData, chrBanks[0], chrBanks[1]);
-        printf("Switch mode 0 chr, %0.2X - %0.2X, %0.2X, %0.2X, %0.2X\r\n", regChr0, chrBanks[0][0] , chrBanks[0][1], chrBanks[1][0] , chrBanks[1][1] );
-        /*
-        
-          regChr1 = regTmp;
-          
-          if (modeCHR == 1) {
-          chrBanks[1] = data->chrData + (0x1000 * regTmp);
-          }
-          
-          */
-        
+        if (modeCHR == 1) {
+            chrBanks[1] = data->chrData + (0x1000 * regTmp);
+        }
     } else {
         //TODO PRG-RAM...
         

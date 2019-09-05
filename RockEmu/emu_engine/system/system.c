@@ -15,6 +15,10 @@
 #include "cartridge.h"
 
 #include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <string.h>
 
 extern struct CpuData cpuData;
 extern struct PpuData ppuData;
@@ -33,6 +37,9 @@ void ppu_bus_load_data(FILE *fp);
 
 extern int counter;
 
+static int selectedBank = 0;
+char szBankLocation[255] = "/Documents/rockemu/saved-states/";
+
 char szCpuData[10];
 
 void system_save_state() {
@@ -41,10 +48,29 @@ void system_save_state() {
     
     printf("Saving State at %0.8X - %0.4X - %0.2X\r\n", counter, cpuData.pc, bus_read(cpuData.pc));
     
-    FILE *fp = fopen("/Users/rockypulley/Documents/state.dat", "wb");
+    char szFile[255];
+    sprintf(szFile, "%s/Documents/rockemu", getenv("HOME"));
+    
+    mkdir(szFile, S_IXUSR | S_IWUSR | S_IRUSR);
+    printf("LOC: %s %d\r\n", szFile, errno);
+    sprintf(szFile, "%s%s", getenv("HOME"), szBankLocation);
+    mkdir(szFile, S_IXUSR | S_IWUSR | S_IRUSR);
+    printf("LOC: %s %d\r\n", szFile, errno);
+    
+    
+    char *p = strstr(cartridge_get_filename(), "/");
+    char *pp = p;
+    
+    while((pp = strstr(p, "/")) != 0) {
+        p = pp + 1;
+    }
+    
+    sprintf(szFile, "%s%s%s-%d.state", getenv("HOME"), szBankLocation, p, selectedBank);
+    
+    FILE *fp = fopen(szFile, "wb");
     
     if (!fp) {
-        printf("Failed to open %d\r\n", errno);
+        printf("Failed to open %d - %s\r\n", errno, szFile);
         return;
     }
     
@@ -76,14 +102,20 @@ void system_save_state() {
 #include <unistd.h>
 
 void system_load_state() {
-    char sz[255];
-    getcwd(sz, 255);
-    printf("CWD: %s\r\n", sz);
     
-    FILE *fp = fopen("/Users/rockypulley/Documents/state.dat", "rb");
+    char *p = strstr(cartridge_get_filename(), "/");
+    char *pp = p;
+    
+    while((pp = strstr(p, "/")) != 0) {
+        p = pp + 1;
+    }
+    
+    char szFile[255];
+    sprintf(szFile, "%s%s%s-%d.state", getenv("HOME"), szBankLocation, p, selectedBank);
+    FILE *fp = fopen(szFile, "rb");
     
     if (!fp) {
-        printf("Failed to open\r\n");
+        printf("Failed to open: %s\r\n", szFile);
         return;
     }
     
@@ -122,4 +154,12 @@ void system_load_state() {
     printf("Resuming State at %0.8X - %0.4X - %0.2X\r\n", counter, cpuData.pc, bus_read(cpuData.pc));
     
     cpu_resume();
+}
+
+void system_select_bank(byte bank) {
+    selectedBank = bank;
+}
+
+byte system_get_bank(void) {
+    return selectedBank;
 }

@@ -353,6 +353,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         system_save_state();
     }
     
+    @IBAction func onBank0(_ sender: Any) {
+    }
+    @IBAction func onBank1(_ sender: Any) {
+    }
+    @IBAction func onBank2(_ sender: Any) {
+    }
+    @IBAction func onBank3(_ sender: Any) {
+    }
+    @IBAction func onBank4(_ sender: Any) {
+    }
+    @IBAction func onBank5(_ sender: Any) {
+    }
+    @IBAction func onBankUp(_ sender: Any) {
+    }
+    @IBAction func onBankDown(_ sender: Any) {
+    }
+    
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         

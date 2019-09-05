@@ -229,7 +229,7 @@ void cpu_run() {
             if (cpuData.stepping) {
                 cpuData.stepping = 0;
             } else {
-                printf("paused\r\n");
+                //printf("paused\r\n");
                 usleep(1500);
                 continue;
             }
@@ -252,7 +252,7 @@ void cpu_run() {
         ftime(&start);
         
         
-        while(true) { //timer_loop()) {
+        while(timer_loop()) {
             
             ppu_clock();
             ppu_clock();
@@ -262,9 +262,9 @@ void cpu_run() {
             cpu_clock();
             //endProfile();
             
-            //timer_cycle();
+            timer_cycle();
             
-            
+            /*
             if (curFrame < p->curFrame) {
                 ftime(&end);
                 int diff = (int) (1000.0 * (end.time - start.time) + (end.millitm - start.millitm));
@@ -272,7 +272,7 @@ void cpu_run() {
                 usleep(300 - diff);
                 curFrame = p->curFrame;
                 ftime(&start);
-            }
+            }*/
             
             cycleCount++;
             

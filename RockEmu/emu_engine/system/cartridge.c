@@ -22,10 +22,13 @@ struct NesHeader cartridge_get_header(void) {
     return gameHeader;
 }
 
+char szFileName[255];
+
 struct NesData *cartridge_load(const char *filename) {
     struct NesData *data = (struct NesData *)malloc(sizeof(struct NesData));
     data->valid = 0;
     
+    strcpy(szFileName, filename);
     FILE *fp = fopen(filename, "rb");
     if (!fread(&gameHeader, sizeof(gameHeader), 1, fp)) {
         return 0;
@@ -51,6 +54,8 @@ struct NesData *cartridge_load(const char *filename) {
         return 0;
     }
     
+    printf("Read PRG Data: %0.2X - %0.8X\r\n", 0x4000 * gameHeader.prgSize, data->prgData);
+    
     if (gameHeader.chrSize) {
         data->chrData = (uint8_t *)malloc(0x2000 * gameHeader.chrSize);
         
@@ -68,3 +73,6 @@ struct NesData *cartridge_load(const char *filename) {
     return data;
 }
 
+const char *cartridge_get_filename() {
+    return szFileName;
+}

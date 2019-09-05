@@ -322,6 +322,11 @@
 					F4849F99231814EB00DEF4BE = {
 						CreatedOnToolsVersion = 10.3;
 						LastSwiftMigration = 1030;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
 					};
 					F4849FAD231814EC00DEF4BE = {
 						CreatedOnToolsVersion = 10.3;

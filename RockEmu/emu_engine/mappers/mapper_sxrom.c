@@ -40,14 +40,16 @@ void switch_chr_banks() {
     
     if (regControl & 0x10) {
         //4kb mode
-        chrBanks[0] = &data->chrData[0x1000 * (regChrBank0 & 0x1E)];
-        chrBanks[1] = &data->chrData[0x1000 * (regChrBank1 & 0x1E)];
+        //chrBanks[0] = &data->chrData[0x1000 * (regChrBank0 & 0x1E)];
+        //chrBanks[1] = &data->chrData[0x1000 * (regChrBank1 & 0x1E)];
+        
+        chrBanks[0] = data->chrData + (0x1000 * (regChrBank0));
+        chrBanks[1] = data->chrData + (0x1000 * (regChrBank1));
+        //chrBanks[1] = data->chrData + (0x1000 * regLoad);
+        
     } else {
         //8kb mode
         chrBanks[0] = &data->chrData[0x1000 * (regChrBank0 & 0x1E)];
-        chrBanks[1] = chrBanks[0] + 0x1000;
-        
-        chrBanks[0] = data->chrData + (0x1000 * (regChrBank0 | 1));
         chrBanks[1] = chrBanks[0] + 0x1000;
     }
     
@@ -215,6 +217,11 @@ struct Mapper *mapper_sxrom_create(struct NesData *data) {
     if (data->header.chrSize) {
         chrBanks[0] = data->chrData;
         chrBanks[1] = &data->chrData[0x1000];
+    } else {
+        data->chrData = (byte *)malloc(0x2000);
+        chrBanks[0] = data->chrData;
+        chrBanks[1] = data->chrData + 0x1000;
+        data->header.chrSize = 1;
     }
     
     prgSize = (data->header.prgSize * 0x4000);

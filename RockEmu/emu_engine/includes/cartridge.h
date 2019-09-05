@@ -46,6 +46,8 @@ struct NesData *cartridge_get_data(void);
 
 struct NesHeader cartridge_get_header(void);
 
+const char *cartridge_get_filename(void);
+
 /*
  An iNES file consists of the following sections, in order:
  
